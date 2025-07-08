@@ -38,7 +38,7 @@ const PopularDestinations = () => {
     {
       id: 6,
       name: 'Sydney',
-      image: 'https://placehold.co/300x200?text=Sydney',
+      image: images.sydney,
       tours: 14
     }
   ];

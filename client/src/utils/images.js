@@ -6,6 +6,7 @@ export const images = {
   bali: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4',
   tokyo: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989',
   newYork: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9',
+  sydney: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
   testimonial1: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2',
   testimonial2: 'https://images.unsplash.com/photo-1560250097-0b93528c311a',
   testimonial3: 'https://images.unsplash.com/photo-1551836026-d5a92c422b42',
