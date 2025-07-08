@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  client:
+    build: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      - server
+    networks:
+      - travel-network
+
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/travelease
+    depends_on:
+      - mongo
+    networks:
+      - travel-network
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - travel-network
+
+volumes:
+  mongo-data:
+
+networks:
+  travel-network:
+    driver: bridge
