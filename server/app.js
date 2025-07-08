@@ -19,7 +19,6 @@ mongoose.connect('mongodb://mongo:27017/travelease', {
 
 // Routes
 app.use('/api/tours', tourRoutes);
-app.use('/api/destinations', destinationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
