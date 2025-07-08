@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/components/Navbar.css';
+import { images } from '../utils/images';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src="https://placehold.co/120x40?text=Logo" alt="TravelEase Logo" />
+          <img src={images.logo} alt="TravelEase Logo" style={{height: '40px'}} />
         </Link>
 
         <div className="mobile-menu-icon" onClick={toggleMenu}>

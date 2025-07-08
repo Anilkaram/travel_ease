@@ -1,13 +1,14 @@
 import React from 'react';
 import TourCard from './TourCard';
 import '../styles/components/FeaturedTours.css';
+import { images } from '../utils/images';
 
 const FeaturedTours = () => {
   const tours = [
     {
       id: 1,
       title: 'Paris City Tour',
-      image: 'https://placehold.co/300x200?text=Paris',
+      image: images.paris,
       duration: '7 Days',
       price: '$1200',
       rating: 4.8

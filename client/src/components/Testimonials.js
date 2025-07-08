@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/components/Testimonials.css';
+import { images } from '../utils/images';
 
 const Testimonials = () => {
   const testimonials = [
@@ -9,7 +10,7 @@ const Testimonials = () => {
       location: 'New York, USA',
       text: 'TravelEase made our vacation unforgettable! The guides were knowledgeable and the itinerary was perfect.',
       rating: 5,
-      image: 'https://placehold.co/100x100?text=User+1'
+      image: images.testimonial1
     },
     {
       id: 2,
@@ -17,7 +18,7 @@ const Testimonials = () => {
       location: 'Toronto, Canada',
       text: 'Best travel experience ever! Everything was well-organized and exceeded our expectations.',
       rating: 5,
-      image: 'https://placehold.co/100x100?text=User+2'
+      image: images.testimonial2
     },
     {
       id: 3,
@@ -25,7 +26,7 @@ const Testimonials = () => {
       location: 'London, UK',
       text: 'The tour packages are worth every penny. We will definitely book with TravelEase again!',
       rating: 4,
-      image: 'https://placehold.co/100x100?text=User+3'
+      image: images.testimonial3
     }
   ];
 

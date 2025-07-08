@@ -1,37 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/components/PopularDestinations.css';
+import { images } from '../utils/images';
 
 const PopularDestinations = () => {
   const destinations = [
     {
       id: 1,
       name: 'Paris',
-      image: 'https://placehold.co/300x200?text=Paris',
+      image: images.paris,
       tours: 24
     },
     {
       id: 2,
       name: 'Rome',
-      image: 'https://placehold.co/300x200?text=Rome',
+      image: images.rome,
       tours: 18
     },
     {
       id: 3,
       name: 'Bali',
-      image: 'https://placehold.co/300x200?text=Bali',
+      image: images.bali,
       tours: 15
     },
     {
       id: 4,
       name: 'Tokyo',
-      image: 'https://placehold.co/300x200?text=Tokyo',
+      image: images.tokyo,
       tours: 12
     },
     {
       id: 5,
       name: 'New York',
-      image: 'https://placehold.co/300x200?text=New+York',
+      image: images.newYork,
       tours: 20
     },
     {
