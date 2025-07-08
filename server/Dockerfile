@@ -17,4 +17,5 @@ RUN ls -la /app/models/ # Verification step
 
 EXPOSE 5000
 
-CMD ["node", "app.js"]
+# Run seed script before starting the server
+CMD ["sh", "-c", "node seed.js && node app.js"]
