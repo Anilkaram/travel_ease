@@ -25,6 +25,9 @@ services:
       - mongo
     networks:
       - travel-network
+    volumes:
+      - ./server:/app
+      - /app/node_modules
 
   mongo:
     image: mongo:5.0

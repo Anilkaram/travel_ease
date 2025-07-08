@@ -3,9 +3,16 @@ const Tour = require('../models/Tour');
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find();
-    res.json(tours);
+    res.status(200).json({
+      status: 'success',
+      results: tours.length,
+      data: { tours }
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(400).json({
+      status: 'fail',
+      message: err.message
+    });
   }
 };
 
