@@ -1,6 +1,6 @@
 import React from 'react';
 import TourCard from '../components/TourCard';
-import './Tours.css';
+import '../styles/pages/Tours.css';
 
 const Tours = () => {
   const tours = [

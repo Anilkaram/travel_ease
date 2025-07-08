@@ -1,7 +1,7 @@
 // client/src/components/TourCard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './TourCard.css';
+import '../styles/components/TourCard.css'; 
 
 const TourCard = ({ tour }) => {
   return (
