@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/components/HeroSection.css';
+import '../styles/components/HeroSection.css'; // Updated path
 
 const HeroSection = () => {
   return (
@@ -23,4 +23,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;Navbar.css
+export default HeroSection;
