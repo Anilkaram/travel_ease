@@ -8,10 +8,26 @@ const Login = () => {
     password: ''
   });
 
-  const handleSubmit = (e) => {
+  const [message, setMessage] = useState('');
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic
-    console.log('Login submitted', formData);
+    setMessage('');
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage('Login successful! Redirecting...');
+        window.location.href = '/contact';
+      } else {
+        setMessage(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setMessage('Server error');
+    }
   };
 
   return (
@@ -39,6 +55,7 @@ const Login = () => {
           </div>
           <button type="submit" className="login-btn">Login</button>
         </form>
+        {message && <div style={{marginTop: '1rem', color: message.includes('success') ? 'green' : 'red'}}>{message}</div>}
         <div className="login-footer">
           <p>Don't have an account? <Link to="/register">Register</Link></p>
           <p><Link to="/forgot-password">Forgot password?</Link></p>
