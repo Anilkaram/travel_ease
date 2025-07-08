@@ -9,5 +9,3 @@ COPY app.js ./
 RUN npm install --production
 EXPOSE 5000
 CMD ["node", "app.js"]
-EXPOSE 5000
-CMD ["node", "app.js"]
