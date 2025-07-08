@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://travelease.com/sitemap.xml
