@@ -27,7 +27,26 @@ const About = () => {
         <section className="team-section">
           <h2>Meet Our Team</h2>
           <div className="team-members">
-            {/* Team member cards would go here */}
+            <div className="team-card">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" />
+              <h4>John Doe</h4>
+              <p>Founder & CEO</p>
+            </div>
+            <div className="team-card">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" />
+              <h4>Jane Smith</h4>
+              <p>Head of Operations</p>
+            </div>
+            <div className="team-card">
+              <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Mike Brown" />
+              <h4>Mike Brown</h4>
+              <p>Lead Travel Expert</p>
+            </div>
+            <div className="team-card">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily White" />
+              <h4>Emily White</h4>
+              <p>Customer Support</p>
+            </div>
           </div>
         </section>
       </div>
