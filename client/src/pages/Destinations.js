@@ -9,7 +9,30 @@ const destinations = [
     image: images.paris,
     description: 'The city of love and lights with iconic landmarks like the Eiffel Tower and Louvre Museum.'
   },
-  // Add other destinations...
+  {
+    id: 2,
+    name: 'Rome, Italy',
+    image: images.rome,
+    description: 'Experience ancient history, art, and culture in the heart of Italy.'
+  },
+  {
+    id: 3,
+    name: 'Bali, Indonesia',
+    image: images.bali,
+    description: 'A tropical paradise known for its beaches, temples, and vibrant culture.'
+  },
+  {
+    id: 4,
+    name: 'Tokyo, Japan',
+    image: images.tokyo,
+    description: 'A bustling metropolis blending tradition and innovation.'
+  },
+  {
+    id: 5,
+    name: 'New York, USA',
+    image: images.newYork,
+    description: 'The city that never sleeps, full of iconic sights and experiences.'
+  },
 ];
 
 const Destinations = () => {
@@ -23,7 +46,7 @@ const Destinations = () => {
             <div className="destination-info">
               <h3>{destination.name}</h3>
               <p>{destination.description}</p>
-              <button className="explore-btn">Explore Tours</button>
+              <a href="/tours" className="explore-btn">Explore Tours</a>
             </div>
           </div>
         ))}
