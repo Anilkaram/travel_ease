@@ -13,7 +13,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src="/images/logo.png" alt="TravelEase Logo" />
+          <img src="https://placehold.co/120x40?text=Logo" alt="TravelEase Logo" />
         </Link>
 
         <div className="mobile-menu-icon" onClick={toggleMenu}>

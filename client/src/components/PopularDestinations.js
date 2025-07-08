@@ -7,37 +7,37 @@ const PopularDestinations = () => {
     {
       id: 1,
       name: 'Paris',
-      image: '/images/paris.jpg',
+      image: 'https://placehold.co/300x200?text=Paris',
       tours: 24
     },
     {
       id: 2,
       name: 'Rome',
-      image: '/images/rome.jpg',
+      image: 'https://placehold.co/300x200?text=Rome',
       tours: 18
     },
     {
       id: 3,
       name: 'Bali',
-      image: '/images/bali.jpg',
+      image: 'https://placehold.co/300x200?text=Bali',
       tours: 15
     },
     {
       id: 4,
       name: 'Tokyo',
-      image: '/images/tokyo.jpg',
+      image: 'https://placehold.co/300x200?text=Tokyo',
       tours: 12
     },
     {
       id: 5,
       name: 'New York',
-      image: '/images/new-york.jpg',
+      image: 'https://placehold.co/300x200?text=New+York',
       tours: 20
     },
     {
       id: 6,
       name: 'Sydney',
-      image: '/images/sydney.jpg',
+      image: 'https://placehold.co/300x200?text=Sydney',
       tours: 14
     }
   ];

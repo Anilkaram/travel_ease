@@ -7,7 +7,7 @@ const FeaturedTours = () => {
     {
       id: 1,
       title: 'Paris City Tour',
-      image: 'paris.jpg',
+      image: 'https://placehold.co/300x200?text=Paris',
       duration: '7 Days',
       price: '$1200',
       rating: 4.8

@@ -6,7 +6,7 @@ import '../styles/components/TourCard.css';
 const TourCard = ({ tour }) => {
   return (
     <div className="tour-card">
-      <img src={tour.image} alt={tour.title} className="tour-image" />
+      <img src={tour.image || 'https://placehold.co/300x200?text=Tour'} alt={tour.title} className="tour-image" />
       <div className="tour-info">
         <h3>{tour.title}</h3>
         <p className="tour-description">{tour.description}</p>
