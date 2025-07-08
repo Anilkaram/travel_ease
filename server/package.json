@@ -19,7 +19,8 @@
     "helmet": "^7.0.0",
     "express-rate-limit": "^6.7.0",
     "express-mongo-sanitize": "^2.2.0",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "bcrypt": "^5.1.1"
   },
   "devDependencies": {
     "eslint": "^8.45.0",

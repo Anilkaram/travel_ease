@@ -5,8 +5,9 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+
+# Install dependencies including bcrypt
+RUN npm install --production
 
 # Copy all other files
 COPY . .
