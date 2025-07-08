@@ -2,8 +2,8 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import FeaturedTours from '../components/FeaturedTours';
 import PopularDestinations from '../components/PopularDestinations';
-import Testimonials from '../components/Testimonials';
-import Newsletter from '../components/Newsletter';
+// import Testimonials from '../components/Testimonials';
+// import Newsletter from '../components/Newsletter';
 
 const Home = () => {
   return (
@@ -11,8 +11,8 @@ const Home = () => {
       <HeroSection />
       <FeaturedTours />
       <PopularDestinations />
-      <Testimonials />
-      <Newsletter />
+      {/* <Testimonials />
+      <Newsletter /> */}
     </div>
   );
 };
