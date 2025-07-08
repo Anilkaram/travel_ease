@@ -1,0 +1,130 @@
+.navbar {
+  background-color: #fff;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 24px;
+}
+
+.navbar-logo {
+  color: #4a6bff;
+  justify-self: flex-start;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo img {
+  height: 40px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+}
+
+.nav-item {
+  height: 80px;
+}
+
+.nav-links {
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.nav-links:hover {
+  color: #4a6bff;
+}
+
+.nav-btn {
+  background: #4a6bff;
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 5px;
+  margin-left: 15px;
+}
+
+.nav-btn:hover {
+  background: #3a56d4;
+  color: white !important;
+}
+
+.mobile-menu-icon {
+  display: none;
+  color: #2d3748;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    position: absolute;
+    top: 80px;
+    left: -100%;
+    opacity: 1;
+    transition: all 0.5s ease;
+    background: #fff;
+  }
+
+  .nav-menu.active {
+    left: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
+
+  .nav-item {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .nav-links {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
+
+  .nav-btn {
+    margin: 20px auto 0;
+    width: 80%;
+    text-align: center;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+}
