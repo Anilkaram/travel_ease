@@ -5,6 +5,8 @@ import PopularDestinations from '../components/PopularDestinations';
 import Testimonials from '../components/Testimonials';
 import Newsletter from '../components/Newsletter';
 
+import '../styles/pages/Home.css';
+
 const Home = () => {
   return (
     <div className="home-page">

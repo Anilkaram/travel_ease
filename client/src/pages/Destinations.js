@@ -1,4 +1,6 @@
+
 import React from 'react';
+import '../styles/pages/Destinations.css';
 
 const Destinations = () => {
   return (

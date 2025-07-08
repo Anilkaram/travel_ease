@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './PopularDestinations.css';
+import '../styles/components/PopularDestinations.css';
 
 const PopularDestinations = () => {
   const destinations = [
