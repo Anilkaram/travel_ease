@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const tourRoutes = require('./routes/tourRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/tours', tourRoutes);
+app.use('/api/auth', authRoutes);
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI)

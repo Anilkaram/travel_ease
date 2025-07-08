@@ -37,7 +37,6 @@ const Contact = () => {
             <p><strong>Address:</strong> 123 Travel St, Wanderlust City</p>
           </div>
         </div>
-        
         <form className="contact-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label>
@@ -50,7 +49,6 @@ const Contact = () => {
               required
             />
           </div>
-          
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -62,7 +60,6 @@ const Contact = () => {
               required
             />
           </div>
-          
           <div className="form-group">
             <label htmlFor="message">Message</label>
             <textarea
@@ -71,9 +68,9 @@ const Contact = () => {
               value={formData.message}
               onChange={handleChange}
               required
+              rows={5}
             />
           </div>
-          
           <button type="submit" className="submit-btn">Send Message</button>
         </form>
       </div>
