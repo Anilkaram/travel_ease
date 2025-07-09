@@ -7,7 +7,9 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 // Routes
 app.use('/api/tours', tourRoutes);
 app.use('/api/auth', authRoutes);

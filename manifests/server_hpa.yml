@@ -2,9 +2,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: server_hpa
+  name: server-hpa
 spec:
-  serviceName: server-service
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
