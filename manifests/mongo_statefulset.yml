@@ -59,11 +59,11 @@ spec:
           timeoutSeconds: 5
           failureThreshold: 3
   volumeClaimTemplates:
-  - metadata:
-      name: mongo-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "gp2"
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: mongo-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "my-storage-class"
+        resources:
+          requests:
+            storage: 1Gi
