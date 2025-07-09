@@ -63,7 +63,7 @@ spec:
         name: mongo-storage
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "my-storage-class"
+        storageClassName: "gp2"
         resources:
           requests:
             storage: 1Gi
