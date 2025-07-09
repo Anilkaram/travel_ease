@@ -4,5 +4,5 @@ metadata:
   name: server-config
 data:
   NODE_ENV: development
-  MONGO_URI: mongodb://mongo:27017/travelease
+  MONGO_URI: mongodb://admin:admin@mongo:27017/travelease?authSource=admin
   
