@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind : Deployment
+metadata: 
+  name: server-deployment
+  label: server-deploy
+spec:
+  selector: 
+    matchLabels:
+      app: server_d
+  template:
+    metadata:
+      labels:
+        app: server_d
+    spec:
+      containers:
+      - name: server_cont
+        image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:server_v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: server-config
+              key: NODE_ENV
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: server-config
+              key: MONGO_URI
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: server-config
+              key: PORT
+        resources:
+          requests:
+            cpu: 200m
+            memory: 254Mi
+          limits:
+            cpu: 700m
+            memory: 812Mi
+        readinessPorbe:
+          httpGet:
+            path: /api/health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      imagePullSecrets:
+      - name: ecr-cred
