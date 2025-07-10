@@ -19,13 +19,13 @@ spec:
         env:
         - name: NODE_ENV
           valueFrom:
-            configMapKeyRef:
-              name: server-config
+            secretKeyRef:
+              name: server-secret
               key: NODE_ENV
         - name: MONGO_URI
           valueFrom:
-            configMapKeyRef:
-              name: server-config
+            secretKeyRef:
+              name: server-secret
               key: MONGO_URI
         resources:
           requests:
