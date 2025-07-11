@@ -17,13 +17,38 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok',
-    timestamp: new Date(),
-    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
-  });
+// Simple root endpoint for basic connectivity check
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
+
+// Health check endpoint with absolute path
+app.get('/api/health', async (req, res) => {
+  try {
+    // Check MongoDB connection
+    const isDbConnected = mongoose.connection.readyState === 1;
+    
+    // Basic health check response
+    const healthCheck = {
+      status: isDbConnected ? 'ok' : 'error',
+      timestamp: new Date(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV,
+      mongodb: {
+        status: isDbConnected ? 'connected' : 'disconnected',
+        host: mongoose.connection.host
+      }
+    };
+
+    // Send appropriate status code based on MongoDB connection
+    res.status(isDbConnected ? 200 : 503).json(healthCheck);
+  } catch (error) {
+    res.status(503).json({
+      status: 'error',
+      timestamp: new Date(),
+      message: error.message
+    });
+  }
 });
 
 // Routes
