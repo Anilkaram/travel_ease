@@ -12,7 +12,7 @@ spec:
         app: server-d
     spec:
       containers:
-      - name: server-cont
+      - name: server
         image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:server_v1
         ports:
         - containerPort: 5000
