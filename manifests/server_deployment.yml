@@ -40,12 +40,13 @@ spec:
             port: 5000
           failureThreshold: 30
           periodSeconds: 10
+          timeoutSeconds: 1
         readinessProbe:
           httpGet:
             path: /api/health/full
             port: 5000
-          initialDelaySeconds: 10
-          periodSeconds: 30
+          initialDelaySeconds: 15
+          periodSeconds: 15
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 3
@@ -53,10 +54,14 @@ spec:
           httpGet:
             path: /api/health
             port: 5000
-          initialDelaySeconds: 15
-          periodSeconds: 20
+          initialDelaySeconds: 30
+          periodSeconds: 30
           timeoutSeconds: 3
           successThreshold: 1
           failureThreshold: 3
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 10"]
    #   imagePullSecrets:
     #  - name: ecr-cred

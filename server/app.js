@@ -7,43 +7,99 @@ const destinationRoutes = require('./routes/destinationRoutes');
 
 const app = express();
 
-// Debug middleware to log all incoming requests
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
+// Health status tracking
+let isShuttingDown = false;
 
-// Health check endpoint - MUST be registered first, with explicit path
-app.get('/api/health', (req, res) => {
-  console.log('Health check endpoint called');
-  res.status(200).json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-    uptime: process.uptime()
-  });
-});
-
-// Separate full health check with DB status
-app.get('/api/health/full', async (req, res) => {
+// Basic health check endpoint (for liveness probe)
+app.get(['/health', '/api/health'], (req, res) => {
   try {
-    console.log('Full health check endpoint called');
-    const dbStatus = mongoose.connection.readyState === 1;
-    res.status(200).json({
+    // If we're shutting down, return unhealthy
+    if (isShuttingDown) {
+      console.log('Health check failed: server is shutting down');
+      return res.status(503).json({
+        status: 'error',
+        message: 'Server is shutting down',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Basic health check passed
+    console.log('Basic health check passed');
+    return res.status(200).json({
       status: 'ok',
       timestamp: new Date().toISOString(),
-      database: {
-        status: dbStatus ? 'connected' : 'disconnected',
-        host: mongoose.connection.host
-      },
+      path: req.path,
       uptime: process.uptime()
     });
   } catch (error) {
+    console.error('Health check error:', error);
     res.status(500).json({
       status: 'error',
-      message: error.message
+      message: 'Internal server error during health check',
+      timestamp: new Date().toISOString()
     });
   }
+});
+
+// Full health check endpoint (for readiness probe)
+app.get(['/health/full', '/api/health/full'], async (req, res) => {
+  try {
+    // If we're shutting down, return not ready
+    if (isShuttingDown) {
+      console.log('Full health check failed: server is shutting down');
+      return res.status(503).json({
+        status: 'error',
+        message: 'Server is shutting down',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Check MongoDB connection
+    const dbStatus = mongoose.connection.readyState;
+    const dbStatusMap = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+
+    // Only return success if DB is fully connected
+    const isDbConnected = dbStatus === 1;
+    const statusCode = isDbConnected ? 200 : 503;
+
+    console.log(`Full health check - Database status: ${dbStatusMap[dbStatus]}`);
+    
+    return res.status(statusCode).json({
+      status: isDbConnected ? 'ok' : 'error',
+      timestamp: new Date().toISOString(),
+      database: {
+        status: dbStatusMap[dbStatus],
+        host: mongoose.connection.host,
+        name: mongoose.connection.name,
+        port: mongoose.connection.port
+      },
+      application: {
+        uptime: process.uptime(),
+        memoryUsage: process.memoryUsage(),
+        nodeVersion: process.version
+      }
+    });
+  } catch (error) {
+    console.error('Full health check error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal server error during full health check',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// Debug middleware to log all incoming requests
+app.use((req, res, next) => {
+  if (!req.path.includes('/health')) { // Don't log health check requests to avoid noise
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  }
+  next();
 });
 
 // CORS middleware
@@ -108,16 +164,21 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('- GET /api/destinations');
 });
 
-// Graceful shutdown
+// Graceful shutdown handler
 process.on('SIGTERM', () => {
+  isShuttingDown = true;
   console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    mongoose.connection.close(false, () => {
-      console.log('MongoDB connection closed');
-      process.exit(0);
+  
+  // Give ongoing requests 10 seconds to complete
+  setTimeout(() => {
+    server.close(() => {
+      console.log('HTTP server closed');
+      mongoose.connection.close(false, () => {
+        console.log('MongoDB connection closed');
+        process.exit(0);
+      });
     });
-  });
+  }, 10000);
 });
 
 module.exports = app;
