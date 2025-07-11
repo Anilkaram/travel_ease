@@ -49,39 +49,18 @@ app.use('*', (req, res) => {
   });
 });
 
-// Database connection with retry logic
-const connectDB = async (retries = 5) => {
-  for (let i = 0; i < retries; i++) {
-    try {
-      console.log(`MongoDB connection attempt ${i + 1} of ${retries}`);
-      await mongoose.connect(process.env.MONGO_URI);
-      console.log('MongoDB connected successfully!');
-      return;
-    } catch (err) {
-      console.error('MongoDB connection error:', err);
-      if (i === retries - 1) throw err;
-      console.log('Retrying in 5 seconds...');
-      await new Promise(resolve => setTimeout(resolve, 5000));
-    }
-  }
-};
-
-// Start server only after DB connection
-const startServer = async () => {
-  try {
-    await connectDB();
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log('Environment:', process.env.NODE_ENV);
-      console.log('MongoDB URI:', process.env.MONGO_URI?.replace(/:([^:@]+)@/, ':****@'));
-    });
-  } catch (err) {
-    console.error('Failed to start server:', err);
+// Database connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected successfully!'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
     process.exit(1);
-  }
-};
+  });
 
-startServer();
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log('Environment:', process.env.NODE_ENV);
+});
 
 module.exports = app;
