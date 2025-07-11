@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:server_v1
+        image: anildoc143/travel_ease_website:server_v1
         ports:
         - containerPort: 5000
         env:
