@@ -46,6 +46,6 @@ spec:
             port: 80
           initialDelaySeconds: 15
           periodSeconds: 10
-      imagePullSecrets:
-      - name: ecr-cred
+    #  imagePullSecrets:
+    #  - name: ecr-cred
       
