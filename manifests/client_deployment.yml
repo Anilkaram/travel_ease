@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:client_v1
+        image: anildoc143/travel_ease_website:client_v1
         ports:
         - containerPort: 80
         env:
