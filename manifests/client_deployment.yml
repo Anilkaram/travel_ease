@@ -12,7 +12,7 @@ spec:
         app: client-d
     spec:
       containers:
-      - name: client-cont
+      - name: client
         image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:client_v1
         ports:
         - containerPort: 80
