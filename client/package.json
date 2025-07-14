@@ -23,6 +23,7 @@
     "lint": "eslint . --ext .js,.jsx",
     "format": "prettier --write ."
   },
+  "proxy": "http://localhost:5000",
   "eslintConfig": {
     "extends": [
       "react-app",
