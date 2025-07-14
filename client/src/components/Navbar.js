@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../styles/components/Navbar.css';
 import { images } from '../utils/images';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
   };
 
   return (
@@ -51,16 +58,31 @@ const Navbar = () => {
               Contact
             </Link>
           </li>
-          <li className="nav-item">
-            <Link to="/login" className="nav-links nav-btn" onClick={toggleMenu}>
-              Login
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/register" className="nav-links nav-btn" onClick={toggleMenu}>
-              Register
-            </Link>
-          </li>
+          {isAuthenticated ? (
+            <>
+              <li className="nav-item user-info">
+                <span className="nav-links">Welcome, {user?.name || user?.email}</span>
+              </li>
+              <li className="nav-item">
+                <button className="nav-links nav-btn logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <Link to="/login" className="nav-links nav-btn" onClick={toggleMenu}>
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register" className="nav-links nav-btn" onClick={toggleMenu}>
+                  Register
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>

@@ -79,6 +79,28 @@
   cursor: pointer;
 }
 
+/* User info and logout button styles */
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info .nav-links {
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: default;
+}
+
+.logout-btn {
+  background: var(--danger-color) !important;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #e53e3e !important;
+}
+
 @media screen and (max-width: 960px) {
   .nav-menu {
     display: flex;
