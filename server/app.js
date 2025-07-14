@@ -7,6 +7,12 @@ const destinationRoutes = require('./routes/destinationRoutes');
 
 const app = express();
 
+// Add request logging for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`, req.body);
+  next();
+});
+
 // CORS middleware
 app.use(cors({
   origin: ['http://localhost:80', 'http://localhost:3000', 'http://localhost'],
