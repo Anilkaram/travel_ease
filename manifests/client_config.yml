@@ -5,5 +5,5 @@ metadata:
 data:
   NODE_ENV: development
   #REACT_APP_API_URL: http://your-server-ip:5000
-  REACT_APP_API_URL: http://server_service:5000
+  REACT_APP_API_URL: http://server-service:80
   

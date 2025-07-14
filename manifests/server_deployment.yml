@@ -27,6 +27,11 @@ spec:
             secretKeyRef:
               name: server-secret
               key: MONGO_URI
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: JWT_SECRET
         resources:
           requests:
             cpu: 200m

@@ -28,7 +28,7 @@ spec:
               name: client-config
               key: REACT_APP_API_URL
         - name: API_BACKEND
-          value: "server-service:5000"  # Kubernetes service name
+          value: "server-service:80"  # Kubernetes service name and port
         resources:
           requests:
             cpu: 200m
