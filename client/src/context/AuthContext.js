@@ -57,9 +57,28 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password })
       });
 
+      // Log the status code for debugging
+      console.log('Login response status:', response.status);
+
+      // Check if the response is not OK
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Login response body:', text);
+        
+        let errorMessage;
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.message || `HTTP error! status: ${response.status}`;
+        } catch {
+          errorMessage = `Server error (${response.status}): ${text.substring(0, 100)}...`;
+        }
+        
+        return { success: false, message: errorMessage };
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.token) {
         localStorage.setItem('token', data.token);
         setUser(data.user);
         return { success: true, message: 'Login successful!' };
@@ -68,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, message: 'Server error' };
+      return { success: false, message: 'Network error or server is not responding' };
     }
   };
 
@@ -82,9 +101,31 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify(userData)
       });
 
-      const data = await response.json();
+      // Log the status code for debugging
+      console.log('Server response status:', response.status);
+      
+      // Check if the response is not OK (e.g., 404, 500)
+      if (!response.ok) {
+        // Read and log the response body as text to see what the server actually returned
+        const text = await response.text();
+        console.error('Server response body:', text);
+        
+        // Try to parse as JSON if possible, otherwise use the text
+        let errorMessage;
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.message || `HTTP error! status: ${response.status}`;
+        } catch {
+          errorMessage = `Server error (${response.status}): ${text.substring(0, 100)}...`;
+        }
+        
+        return { success: false, message: errorMessage };
+      }
 
-      if (response.ok) {
+      // If response is OK, parse it as JSON
+      const data = await response.json();
+      
+      if (data.token) {
         localStorage.setItem('token', data.token);
         setUser(data.user);
         return { success: true, message: 'Registration successful!' };
@@ -93,7 +134,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      return { success: false, message: 'Server error' };
+      return { success: false, message: 'Network error or server is not responding' };
     }
   };
 

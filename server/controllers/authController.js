@@ -1,5 +1,14 @@
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+
+// Try to import jsonwebtoken with error handling
+let jwt;
+try {
+  jwt = require('jsonwebtoken');
+  console.log('✅ jsonwebtoken loaded successfully');
+} catch (error) {
+  console.error('❌ Failed to load jsonwebtoken:', error.message);
+  console.error('Please run: npm install jsonwebtoken');
+}
 
 // Generate JWT token
 const generateToken = (userId) => {
@@ -11,6 +20,14 @@ const generateToken = (userId) => {
 
 exports.register = async (req, res) => {
   try {
+    console.log('📝 Registration attempt:', { body: req.body });
+    
+    // Check if JWT is available
+    if (!jwt) {
+      console.error('❌ JWT not available');
+      return res.status(500).json({ message: 'Server configuration error: JWT not available' });
+    }
+
     const { name, email, password } = req.body;
     
     // Validate input
@@ -28,6 +45,8 @@ exports.register = async (req, res) => {
     
     // Generate token
     const token = generateToken(user._id);
+    
+    console.log('✅ User registered successfully:', user.email);
     
     res.status(201).json({ 
       message: 'User registered successfully',
