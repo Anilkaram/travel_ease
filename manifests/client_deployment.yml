@@ -27,6 +27,8 @@ spec:
             configMapKeyRef:
               name: client-config
               key: REACT_APP_API_URL
+        - name: API_BACKEND
+          value: "server-service:5000"  # Kubernetes service name
         resources:
           requests:
             cpu: 200m
