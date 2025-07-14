@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 
 // Generate JWT token
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET || 'your-secret-key', {
+  const secret = process.env.JWT_SECRET || 'TravelEase2025SecretKeyForJWTTokens987654321';
+  return jwt.sign({ userId }, secret, {
     expiresIn: '30d',
   });
 };
@@ -88,7 +89,7 @@ exports.verify = async (req, res) => {
       return res.status(401).json({ message: 'No token provided' });
     }
     
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'TravelEase2025SecretKeyForJWTTokens987654321');
     const user = await User.findById(decoded.userId).select('-password');
     
     if (!user) {
