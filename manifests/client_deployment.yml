@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: anildoc143/travel_ease_website:client_v1
+        image: anildoc143/travel_ease_website_v1:client
         ports:
         - containerPort: 80
         env:
