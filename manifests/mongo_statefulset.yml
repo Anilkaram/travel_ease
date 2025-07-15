@@ -3,7 +3,8 @@ kind: StatefulSet
 metadata:
   name: mango-statefulset
 spec:
-  replicas: 2
+  replicas: 2  # Production replica set with 3 nodes for high availability
+  serviceName: "mongo-headless"  # Required for StatefulSet
   selector:
     matchLabels:
       app: db
@@ -28,16 +29,44 @@ spec:
             secretKeyRef:
               name: mongo-secret
               key: password
+        - name: MONGO_REPLICA_SET_NAME
+          value: "rs0"
+        - name: MONGO_ADVERTISED_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        command:
+        - "bash"
+        - "-c"
+        - |
+          set -e
+          
+          # Set proper permissions for keyfile
+          cp /etc/mongo-keyfile /tmp/keyfile
+          chmod 400 /tmp/keyfile
+          chown mongodb:mongodb /tmp/keyfile
+          
+          # Start MongoDB with replica set configuration
+          exec mongod \
+            --replSet rs0 \
+            --bind_ip_all \
+            --auth \
+            --keyFile /tmp/keyfile \
+            --dbpath /data/db
         volumeMounts:
         - name: mongo-storage
           mountPath: /data/db
+        - name: mongo-keyfile
+          mountPath: /etc/mongo-keyfile
+          subPath: keyfile
+          readOnly: true
         resources:
           requests:
-            cpu: 200m
-            memory: 400Mi
+            cpu: 250m
+            memory: 500Mi
           limits:
-            cpu: 400m
-            memory: 800Mi
+            cpu: 500m
+            memory: 1Gi
         livenessProbe:
           tcpSocket:
             port: 27017
@@ -52,12 +81,17 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 3
+      volumes:
+      - name: mongo-keyfile
+        secret:
+          secretName: mongo-keyfile
+          defaultMode: 0400
   volumeClaimTemplates:
   - metadata:
       name: mongo-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "gp3"
+      # storageClassName: "gp3"  # Use default StorageClass
       resources:
         requests:
-          storage: 1Gi
+          storage: 2Gi  # Increased for production
