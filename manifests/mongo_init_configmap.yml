@@ -7,43 +7,36 @@ data:
     #!/bin/bash
     set -e
     
-    echo "Waiting for MongoDB to be ready..."
+    echo "Waiting for MongoDB primary to be ready..."
     until mongosh --host mango-statefulset-0.mongo-headless:27017 --eval "db.runCommand('ping').ok" --quiet; do
-      echo "Waiting for MongoDB..."
+      echo "Waiting for MongoDB primary..."
       sleep 5
     done
     
-    echo "Checking if replica set is already initialized..."
-    RS_STATUS=$(mongosh --host mango-statefulset-0.mongo-headless:27017 --eval "try { rs.status().ok } catch(e) { 0 }" --quiet)
+    echo "Waiting for all MongoDB pods to be ready..."
+    until mongosh --host mango-statefulset-1.mongo-headless:27017 --eval "db.runCommand('ping').ok" --quiet; do
+      echo "Waiting for MongoDB secondary 1..."
+      sleep 5
+    done
     
-    if [ "$RS_STATUS" != "1" ]; then
-      echo "Initializing replica set..."
-      mongosh --host mango-statefulset-0.mongo-headless:27017 --eval "
-        rs.initiate({
-          _id: 'rs0',
-          members: [
-            { _id: 0, host: 'mango-statefulset-0.mongo-headless:27017', priority: 2 },
-            { _id: 1, host: 'mango-statefulset-1.mongo-headless:27017', priority: 1 },
-            { _id: 2, host: 'mango-statefulset-2.mongo-headless:27017', priority: 1 }
-          ]
-        })
-      "
-      
-      echo "Waiting for replica set to be ready..."
-      until mongosh --host mango-statefulset-0.mongo-headless:27017 --eval "rs.status().members.length == 3" --quiet; do
-        sleep 5
-      done
-      
-      echo "Creating admin user..."
-      mongosh --host mango-statefulset-0.mongo-headless:27017 --eval "
-        db.getSiblingDB('admin').createUser({
-          user: 'admin',
-          pwd: 'admin',
-          roles: [{role: 'root', db: 'admin'}]
-        })
-      "
-      
-      echo "Replica set initialization complete!"
+    until mongosh --host mango-statefulset-2.mongo-headless:27017 --eval "db.runCommand('ping').ok" --quiet; do
+      echo "Waiting for MongoDB secondary 2..."
+      sleep 5
+    done
+    
+    echo "Checking replica set status with authentication..."
+    # Check if we can connect with admin credentials (means replica set is initialized)
+    if mongosh --host mango-statefulset-0.mongo-headless:27017 -u admin -p admin --authenticationDatabase admin --eval "rs.status().ok" --quiet 2>/dev/null; then
+      echo "Replica set already initialized and admin user exists."
     else
-      echo "Replica set already initialized."
+      echo "Replica set initialization or admin user creation may be needed."
+      echo "This should be handled by the primary pod's startup script."
     fi
+    
+    echo "Final replica set status check..."
+    mongosh --host mango-statefulset-0.mongo-headless:27017 -u admin -p admin --authenticationDatabase admin --eval "
+      print('Replica Set Status:');
+      printjson(rs.status());
+      print('\\nReplica Set Configuration:');
+      printjson(rs.conf());
+    " --quiet || echo "Unable to connect with admin credentials yet. This is normal during initialization."

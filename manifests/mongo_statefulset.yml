@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: mango-statefulset
 spec:
-  replicas: 2  # Production replica set with 3 nodes for high availability
+  replicas: 2  # You have 2 replicas
   serviceName: "mongo-headless"  # Required for StatefulSet
   selector:
     matchLabels:
@@ -46,7 +46,57 @@ spec:
           chmod 400 /tmp/keyfile
           chown mongodb:mongodb /tmp/keyfile
           
-          # Start MongoDB with replica set configuration
+          # Only the first pod initializes the replica set
+          if [[ "$HOSTNAME" == "mango-statefulset-0" ]]; then
+            echo "Primary node - checking if replica set exists..."
+            
+            # Start MongoDB temporarily without auth for setup
+            mongod --replSet rs0 --bind_ip_all --keyFile /tmp/keyfile --dbpath /data/db &
+            MONGO_PID=$!
+            
+            # Wait for MongoDB to start
+            until mongosh --eval "db.runCommand('ping').ok" --quiet; do
+              echo "Waiting for MongoDB to start..."
+              sleep 2
+            done
+            
+            # Check if replica set is initialized
+            if ! mongosh --eval "rs.status()" --quiet 2>/dev/null; then
+              echo "Initializing replica set..."
+              mongosh --eval "
+                rs.initiate({
+                  _id: 'rs0',
+                  members: [{ _id: 0, host: 'mango-statefulset-0.mongo-headless:27017' }]
+                })
+              "
+              
+              # Wait for this node to become primary
+              until mongosh --eval "db.isMaster().ismaster" --quiet | grep -q true; do
+                echo "Waiting to become primary..."
+                sleep 2
+              done
+              
+              echo "Creating admin user..."
+              mongosh --eval "
+                db.getSiblingDB('admin').createUser({
+                  user: '$MONGO_INITDB_ROOT_USERNAME',
+                  pwd: '$MONGO_INITDB_ROOT_PASSWORD',
+                  roles: [{role: 'root', db: 'admin'}]
+                })
+              "
+              
+              echo "Replica set initialized successfully!"
+            else
+              echo "Replica set already exists."
+            fi
+            
+            # Stop and restart with auth
+            kill $MONGO_PID
+            wait $MONGO_PID || true
+          fi
+          
+          # Start MongoDB with authentication
+          echo "Starting MongoDB with authentication..."
           exec mongod \
             --replSet rs0 \
             --bind_ip_all \

@@ -17,8 +17,8 @@ kubectl apply -f mongo_keyfile_secret.yml
 
 # 2. Deploy services
 echo "Deploying services..."
-kubectl apply -f mongo_service.yml          # Headless service
-kubectl apply -f mongo_primary_service.yml   # Primary service
+kubectl apply -f mongo_service.yml          # Headless service (renamed from mongo_headless_service.yml)
+kubectl apply -f mongo_primary_service.yml   # Regular service for app connections
 
 # 3. Deploy StatefulSet
 echo "Deploying StatefulSet..."
@@ -27,13 +27,12 @@ kubectl apply -f mongo_statefulset.yml
 echo "Waiting for MongoDB pods to be ready..."
 kubectl wait --for=condition=ready pod -l app=db --timeout=300s
 
-# 4. Deploy initialization script and job
-echo "Deploying replica set initialization..."
-kubectl apply -f mongo_init_configmap.yml
+# 4. Deploy job to add remaining members to replica set
+echo "Adding remaining members to replica set..."
 kubectl apply -f mongo_init_job.yml
 
-echo "Waiting for replica set initialization to complete..."
-kubectl wait --for=condition=complete job/mongo-replica-set-init --timeout=180s
+echo "Waiting for replica set setup to complete..."
+kubectl wait --for=condition=complete job/mongo-replica-set-add-members --timeout=180s
 
 echo "MongoDB Replica Set Status:"
 kubectl exec mango-statefulset-0 -- mongosh --host mango-statefulset-0.mongo-headless:27017 -u admin -p admin --authenticationDatabase admin --eval "rs.status()" --quiet

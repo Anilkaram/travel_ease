@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-primary
+  name: mongo  # Simple name for application connections
 spec:
   selector:
     app: db
-    # This will typically route to the primary replica
   type: ClusterIP
   ports:
     - port: 27017
