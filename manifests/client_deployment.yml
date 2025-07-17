@@ -12,8 +12,8 @@ spec:
         app: client-d
     spec:
       containers:
-      - name: client-cont
-        image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:client_v1
+      - name: client
+        image: anildoc143/travel_ease_website:client_v1
         ports:
         - containerPort: 80
         env:
@@ -46,6 +46,6 @@ spec:
             port: 80
           initialDelaySeconds: 15
           periodSeconds: 10
-      imagePullSecrets:
-      - name: ecr-cred
+    #  imagePullSecrets:
+    #  - name: ecr-cred
       

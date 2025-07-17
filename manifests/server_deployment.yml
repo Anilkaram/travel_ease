@@ -12,8 +12,8 @@ spec:
         app: server-d
     spec:
       containers:
-      - name: server-cont
-        image: 306630623026.dkr.ecr.us-east-1.amazonaws.com/dev/travel_ease:server_v1
+      - name: server
+        image: anildoc143/travel_ease_website:server_v1
         ports:
         - containerPort: 5000
         env:
@@ -34,17 +34,5 @@ spec:
           limits:
             cpu: 700m
             memory: 812Mi
-        readinessProbe:
-          httpGet:
-            path: /api/health
-            port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /api/health
-            port: 5000
-          initialDelaySeconds: 15
-          periodSeconds: 20
-      imagePullSecrets:
-      - name: ecr-cred
+   #   imagePullSecrets:
+    #  - name: ecr-cred

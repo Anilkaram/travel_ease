@@ -7,7 +7,7 @@ services:
       - "80:80"
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://your-server-ip:5000 
+      - REACT_APP_API_URL=http://server:5000 
     volumes:
       - ./client/src:/app/src
     depends_on:
