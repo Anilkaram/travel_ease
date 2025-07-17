@@ -36,16 +36,17 @@ spec:
           mountPath: /data/db
         resources:
           requests:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 100m  # Reduced for Minikube
+            memory: 128Mi  # Reduced for Minikube
           limits:
-            cpu: 400m
-            memory: 512Mi
+            cpu: 200m  # Reduced for Minikube
+            memory: 256Mi  # Reduced for Minikube
   volumeClaimTemplates:
   - metadata:
       name: mongo-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "minikube-storage"  # Use Minikube storage class
       resources:
         requests:
           storage: 1Gi

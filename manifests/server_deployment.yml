@@ -34,10 +34,10 @@ spec:
               key: JWT_SECRET
         resources:
           requests:
-            cpu: 200m
-            memory: 254Mi
+            cpu: 100m  # Reduced for Minikube
+            memory: 128Mi  # Reduced for Minikube
           limits:
-            cpu: 700m
-            memory: 812Mi
+            cpu: 300m  # Reduced for Minikube
+            memory: 256Mi  # Reduced for Minikube
    #   imagePullSecrets:
     #  - name: ecr-cred
