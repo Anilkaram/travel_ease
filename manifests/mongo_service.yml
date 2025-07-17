@@ -4,8 +4,8 @@ metadata:
   name: mongo
 spec:
   selector:
-    app: db
-  type : ClusterIP
+    app: mongo
+  type: ClusterIP
   ports:
     - port: 27017
       targetPort: 27017

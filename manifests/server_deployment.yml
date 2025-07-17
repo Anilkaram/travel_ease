@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: anildoc143/travel_ease_website:server_v1
+        image: anildoc143/travel_ease_website_v2:server
         ports:
         - containerPort: 5000
         env:
@@ -27,6 +27,11 @@ spec:
             secretKeyRef:
               name: server-secret
               key: MONGO_URI
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: server-secret
+              key: JWT_SECRET
         resources:
           requests:
             cpu: 200m

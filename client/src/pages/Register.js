@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import '../styles/pages/Login.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import '../styles/pages/Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,10 @@ const Register = () => {
     password: ''
   });
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,21 +22,24 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
+    setLoading(true);
+    
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Registration successful! You can now log in.');
-        setFormData({ name: '', email: '', password: '' });
+      const result = await register(formData);
+      
+      if (result.success) {
+        setMessage(result.message);
+        // Redirect to home page after successful registration
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else {
-        setMessage(data.message || 'Registration failed');
+        setMessage(result.message);
       }
     } catch (err) {
-      setMessage('Server error');
+      setMessage('An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,9 +60,14 @@ const Register = () => {
             <label>Password</label>
             <input type="password" name="password" value={formData.password} onChange={handleChange} required />
           </div>
-          <button type="submit" className="login-btn">Register</button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? 'Registering...' : 'Register'}
+          </button>
         </form>
         {message && <div style={{marginTop: '1rem', color: message.includes('success') ? 'green' : 'red'}}>{message}</div>}
+        <div className="login-footer">
+          <p>Already have an account? <Link to="/login">Login</Link></p>
+        </div>
       </div>
     </div>
   );

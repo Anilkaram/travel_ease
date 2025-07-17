@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: anildoc143/travel_ease_website:client_v1
+        image: anildoc143/travel_ease_website_v2:client
         ports:
         - containerPort: 80
         env:
@@ -27,6 +27,8 @@ spec:
             configMapKeyRef:
               name: client-config
               key: REACT_APP_API_URL
+        - name: API_BACKEND
+          value: "server-service:80"  # Kubernetes service name and port
         resources:
           requests:
             cpu: 200m
