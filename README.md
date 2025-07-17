@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-#feature 1:
-
-. code with basic design and without authenication
-=======
 # feature 2
 
 code with authenication and proper running containers in docker, but not in k8s
@@ -12,9 +7,5 @@ code with authenication and proper running containers in docker, but not in k8s
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/80a10cb6-f25a-4ef8-8cf5-a1d039d60949" />
 
 
-# Version -1
-<img width="1920" height="1080" alt="Screenshot (252)" src="https://github.com/user-attachments/assets/2fbfd0f5-96b9-43f9-94c7-a29132bc8fe4" />
-
 #tfsec for scanning vulnerabilities in terraform code 
 <img width="1920" height="1080" alt="Screenshot (251)" src="https://github.com/user-attachments/assets/008e23fa-411e-4b06-abb1-b7de5f215660" />
->>>>>>> feature-v2
