@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo-statefulset
+  name: {{ ..Release.Name}}
 spec:
   replicas: 1  # Single instance for testing
   serviceName: "mongo"
@@ -15,8 +15,8 @@ spec:
     spec:      
       containers:
       - name: mongo
-        image: mongo:5.0
-        ports:  
+        image: "{{ .Values.mongo.image }}:{{ .Values.mongo.tag }}"
+        ports:
         - containerPort: 27017
         env:
         - name: MONGO_INITDB_ROOT_USERNAME

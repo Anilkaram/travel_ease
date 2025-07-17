@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind : Deployment
 metadata: 
-  name: client-deployment
+  name: {{.Release.Name}}
 spec:
   selector: 
     matchLabels:
@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: anildoc143/travel_ease_website_v2:client
+        image: "{{ .Values.client.image }}:{{ .Values.client.tag }}"
         ports:
         - containerPort: 80
         env:
