@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ ..Release.Name}}
+  name: "{{ .Release.Name }}-mongo"
 spec:
   replicas: 1  # Single instance for testing
-  serviceName: "mongo"
+  serviceName: "{{ .Release.Name }}-mongo-service"
   selector:
     matchLabels:
-      app: mongo
+      app: "{{ .Release.Name }}-mongo"
   template:
     metadata:
       labels:
-        app: mongo
-    spec:      
+        app: "{{ .Release.Name }}-mongo"
+    spec:
       containers:
       - name: mongo
         image: "{{ .Values.mongo.image }}:{{ .Values.mongo.tag }}"
@@ -22,12 +22,12 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongo-secret
+              name: "{{ .Release.Name }}-mongo-secret"
               key: username
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongo-secret
+              name: "{{ .Release.Name }}-mongo-secret"
               key: password
         - name: MONGO_INITDB_DATABASE
           value: "travelease"
@@ -36,17 +36,17 @@ spec:
           mountPath: /data/db
         resources:
           requests:
-            cpu: 100m  # Reduced for Minikube
-            memory: 128Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.mongo.requests.cpu }}
+            memory: {{ .Values.resources.mongo.requests.memory }}
           limits:
-            cpu: 200m  # Reduced for Minikube
-            memory: 256Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.mongo.limits.cpu }}
+            memory: {{ .Values.resources.mongo.limits.memory }}
   volumeClaimTemplates:
   - metadata:
       name: mongo-storage
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "minikube-storage"  # Use Minikube storage class
+      storageClassName: {{ .Values.mongo.storage.storageClass }}
       resources:
         requests:
-          storage: 1Gi
+          storage: {{ .Values.mongo.storage.size }}

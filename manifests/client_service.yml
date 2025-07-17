@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-service
+  name: "{{ .Release.Name }}-client-service"
 spec:
   selector:
-    app: client-d
+    app: "{{ .Release.Name }}-client"
   type : LoadBalancer
   ports:
     - port: 80

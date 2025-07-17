@@ -1,15 +1,15 @@
 apiVersion: apps/v1
-kind : Deployment
+kind: Deployment
 metadata: 
-  name: {{.Release.Name}}
+  name: "{{ .Release.Name }}-server"
 spec:
   selector: 
     matchLabels:
-      app: server-d
+      app: "{{ .Release.Name }}-server"
   template:
     metadata:
       labels:
-        app: server-d
+        app: "{{ .Release.Name }}-server"
     spec:
       containers:
       - name: server
@@ -20,24 +20,24 @@ spec:
         - name: NODE_ENV
           valueFrom:
             secretKeyRef:
-              name: server-secret
+              name: "{{ .Release.Name }}-server-secret"
               key: NODE_ENV
         - name: MONGO_URI
           valueFrom:
             secretKeyRef:
-              name: server-secret
+              name: "{{ .Release.Name }}-server-secret"
               key: MONGO_URI
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: server-secret
+              name: "{{ .Release.Name }}-server-secret"
               key: JWT_SECRET
         resources:
           requests:
-            cpu: 100m  # Reduced for Minikube
-            memory: 128Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.server.requests.cpu }}
+            memory: {{ .Values.resources.server.requests.memory }}
           limits:
-            cpu: 300m  # Reduced for Minikube
-            memory: 256Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.server.limits.cpu }}
+            memory: {{ .Values.resources.server.limits.memory }}
    #   imagePullSecrets:
     #  - name: ecr-cred

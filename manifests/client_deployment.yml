@@ -1,15 +1,15 @@
 apiVersion: apps/v1
-kind : Deployment
+kind: Deployment
 metadata: 
-  name: {{.Release.Name}}
+  name: "{{ .Release.Name }}-client"
 spec:
   selector: 
     matchLabels:
-      app: client-d
+      app: "{{ .Release.Name }}-client"
   template:
     metadata:
       labels:
-        app: client-d
+        app: "{{ .Release.Name }}-client"
     spec:
       containers:
       - name: client
@@ -20,22 +20,22 @@ spec:
         - name: NODE_ENV
           valueFrom: 
             configMapKeyRef:
-              name: client-config
+              name: "{{ .Release.Name }}-client-config"
               key: NODE_ENV
         - name: REACT_APP_API_URL
           valueFrom:
             configMapKeyRef:
-              name: client-config
+              name: "{{ .Release.Name }}-client-config"
               key: REACT_APP_API_URL
         - name: API_BACKEND
-          value: "server-service:80"  # Kubernetes service name and port
+          value: "{{ .Release.Name }}-server-service:80"  # Kubernetes service name and port
         resources:
           requests:
-            cpu: 100m  # Reduced for Minikube
-            memory: 128Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.client.requests.cpu }}
+            memory: {{ .Values.resources.client.requests.memory }}
           limits:
-            cpu: 200m  # Reduced for Minikube
-            memory: 256Mi  # Reduced for Minikube
+            cpu: {{ .Values.resources.client.limits.cpu }}
+            memory: {{ .Values.resources.client.limits.memory }}
         readinessProbe:
           httpGet:
             path: /
