@@ -59,18 +59,38 @@ app.use('*', (req, res) => {
   });
 });
 
-// Database connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected successfully!'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+// Function to connect to MongoDB with retry logic
+const connectDB = async () => {
+  const maxRetries = 10;
+  let retries = 0;
+  
+  while (retries < maxRetries) {
+    try {
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log('MongoDB connected successfully!');
+      return;
+    } catch (err) {
+      retries++;
+      console.error(`MongoDB connection attempt ${retries} failed:`, err.message);
+      if (retries === maxRetries) {
+        console.error('Max retries reached. Exiting...');
+        process.exit(1);
+      }
+      console.log(`Retrying in 5 seconds... (${retries}/${maxRetries})`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+  }
+};
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
+
+// Start server first (for health checks), then connect to DB
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   console.log('Environment:', process.env.NODE_ENV);
+  
+  // Connect to database after server starts
+  connectDB();
 });
 
 module.exports = app;

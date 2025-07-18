@@ -11,6 +11,18 @@ spec:
       labels:
         app: "{{ .Release.Name }}-server"
     spec:
+      initContainers:
+      - name: wait-for-mongo
+        image: busybox:1.35
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for MongoDB to be ready..."
+          until nc -z {{ .Release.Name }}-mongo-service 27017; do
+            echo "MongoDB not ready, waiting..."
+            sleep 5
+          done
+          echo "MongoDB is ready!"
       containers:
       - name: server
         image: "{{ .Values.server.image }}:{{ .Values.server.tag }}"

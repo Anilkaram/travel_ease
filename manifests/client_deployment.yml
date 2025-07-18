@@ -11,6 +11,18 @@ spec:
       labels:
         app: "{{ .Release.Name }}-client"
     spec:
+      initContainers:
+      - name: wait-for-server
+        image: busybox:1.35
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for Server to be ready..."
+          until nc -z {{ .Release.Name }}-server-service 80; do
+            echo "Server not ready, waiting..."
+            sleep 5
+          done
+          echo "Server is ready!"
       containers:
       - name: client
         image: "{{ .Values.client.image }}:{{ .Values.client.tag }}"
