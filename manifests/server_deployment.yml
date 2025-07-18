@@ -35,24 +35,24 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 5000
-          initialDelaySeconds: 45
+          initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
         readinessProbe:
           tcpSocket:
             port: 5000
-          initialDelaySeconds: 20
+          initialDelaySeconds: 45
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
         startupProbe:
           tcpSocket:
             port: 5000
-          initialDelaySeconds: 15
-          periodSeconds: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 60
+          failureThreshold: 30
         resources:
           requests:
             cpu: {{ .Values.resources.server.requests.cpu }}
