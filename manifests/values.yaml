@@ -55,6 +55,6 @@ resources:
       cpu: 200m
       memory: 256Mi
 
-Ingress:
+ingress:
   enabled: true
   host: travel-ease.local
