@@ -33,31 +33,25 @@ spec:
               name: "{{ .Release.Name }}-server-secret"
               key: JWT_SECRET
         livenessProbe:
-          httpGet:
-            path: /health
+          tcpSocket:
             port: 5000
-            scheme: HTTP
           initialDelaySeconds: 45
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 5
           failureThreshold: 3
         readinessProbe:
-          httpGet:
-            path: /health
+          tcpSocket:
             port: 5000
-            scheme: HTTP
           initialDelaySeconds: 20
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 5
           failureThreshold: 3
         startupProbe:
-          httpGet:
-            path: /health
+          tcpSocket:
             port: 5000
-            scheme: HTTP
           initialDelaySeconds: 15
           periodSeconds: 5
-          timeoutSeconds: 10
+          timeoutSeconds: 5
           failureThreshold: 60
         resources:
           requests:
