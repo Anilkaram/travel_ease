@@ -32,6 +32,18 @@ spec:
             secretKeyRef:
               name: "{{ .Release.Name }}-server-secret"
               key: JWT_SECRET
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
         resources:
           requests:
             cpu: {{ .Values.resources.server.requests.cpu }}
