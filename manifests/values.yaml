@@ -7,7 +7,7 @@ client:
     port: 80
 
 server:
-  image: anildoc143/travel_ease_website_v2
+  image: anildoc143/travel_ease_website_v3
   tag: server
   replicas: 1
   service:
