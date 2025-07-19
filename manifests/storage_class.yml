@@ -1,10 +1,13 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: minikube-storage
-provisioner: k8s.io/minikube-hostpath  # For Minikube
+  name: gp3
+provisioner: ebs.csi.aws.com  # For AWS EKS
 parameters:
-  type: DirectoryOrCreate
-volumeBindingMode: Immediate
+  type: gp3
+  iops: "3000"
+  throughput: "125"
+  encrypted: "true"
+volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
-reclaimPolicy: Delete  # Better for testing in Minikube
+reclaimPolicy: Retain
