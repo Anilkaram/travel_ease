@@ -21,7 +21,7 @@ mongo:
     type: ClusterIP
     port: 27017
   storage:
-    size: 1Gi
+    size: 2Gi
     storageClass: gp3
 
 # Global configuration
