@@ -22,7 +22,7 @@ mongo:
     port: 27017
   storage:
     size: 1Gi
-    storageClass: minikube-storage
+    storageClass:gp3
 
 # Global configuration
 global:
@@ -31,7 +31,7 @@ global:
 # Environment-specific settings
 environment: development
 
-# Resource limits for Minikube
+# Resource limits
 resources:
   client:
     requests:
