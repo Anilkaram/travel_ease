@@ -22,7 +22,7 @@ mongo:
     port: 27017
   storage:
     size: 1Gi
-    storageClass:gp3
+    storageClass: gp3
 
 # Global configuration
 global:
