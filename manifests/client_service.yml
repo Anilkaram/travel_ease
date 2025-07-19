@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: "{{ .Release.Name }}-client"
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 80
