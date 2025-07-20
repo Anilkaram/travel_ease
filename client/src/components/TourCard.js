@@ -1,12 +1,20 @@
 // client/src/components/TourCard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
 import '../styles/components/TourCard.css'; 
 
 const TourCard = ({ tour }) => {
   return (
     <div className="tour-card">
-      <img src={tour.image || 'https://placehold.co/300x200?text=Tour'} alt={tour.title} className="tour-image" />
+      <OptimizedImage 
+        src={tour.image || 'https://placehold.co/300x200?text=Tour'} 
+        alt={tour.title} 
+        className="tour-image"
+        width="300"
+        height="200"
+        loading="lazy"
+      />
       <div className="tour-info">
         <h3>{tour.title}</h3>
         <p className="tour-description">{tour.description}</p>

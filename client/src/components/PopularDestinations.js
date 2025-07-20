@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OptimizedImage from './OptimizedImage';
 import '../styles/components/PopularDestinations.css';
 import { images } from '../utils/images';
 
@@ -52,10 +53,13 @@ const PopularDestinations = () => {
         <div className="destinations-grid">
           {destinations.map(destination => (
             <div key={destination.id} className="destination-card">
-              <img 
+              <OptimizedImage 
                 src={destination.image} 
                 alt={destination.name} 
                 className="destination-image"
+                width="350"
+                height="200"
+                loading="lazy"
               />
               <div className="destination-info">
                 <h3>{destination.name}</h3>

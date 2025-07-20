@@ -1,3 +1,6 @@
+/* Import performance optimizations */
+@import './performance.css';
+
 :root {
   --primary-color: #4a6bff;
   --secondary-color: #ff7e5f;

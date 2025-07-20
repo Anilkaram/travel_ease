@@ -9,7 +9,7 @@ const About = () => {
         <section>
           <h2>Our Story</h2>
           <p>
-            Founded in 2015, TravelEase began with a simple mission: to make travel planning
+            Founded in 2025, TravelEase began with a simple mission: to make travel planning
             effortless and enjoyable. What started as a small team of travel enthusiasts has
             grown into a trusted platform serving thousands of travelers worldwide.
           </p>
@@ -29,22 +29,22 @@ const About = () => {
           <div className="team-members">
             <div className="team-card">
               <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" />
-              <h4>John Doe</h4>
+              <h4>Anilkumar</h4>
               <p>Founder & CEO</p>
             </div>
             <div className="team-card">
               <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" />
-              <h4>Jane Smith</h4>
+              <h4>Rakesh</h4>
               <p>Head of Operations</p>
             </div>
             <div className="team-card">
               <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Mike Brown" />
-              <h4>Mike Brown</h4>
+              <h4>Vigneshwar</h4>
               <p>Lead Travel Expert</p>
             </div>
             <div className="team-card">
               <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emily White" />
-              <h4>Emily White</h4>
+              <h4>Hema Sree</h4>
               <p>Customer Support</p>
             </div>
           </div>

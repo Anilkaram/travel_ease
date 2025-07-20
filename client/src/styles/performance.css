@@ -1,0 +1,100 @@
+/* Performance optimizations CSS */
+
+/* Improve scrolling performance */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* GPU acceleration for frequently animated elements */
+.tour-card,
+.destination-card,
+.suggestion-item,
+.nav-links,
+.search-button {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Optimize image rendering */
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Optimize font loading */
+.navbar,
+.hero-section h1,
+.section-title {
+  font-display: swap;
+}
+
+/* Reduce layout shifts */
+.loading-container {
+  min-height: 200px;
+  contain: layout style paint;
+}
+
+.tour-card,
+.destination-card {
+  contain: layout style paint;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize for mobile */
+@media (max-width: 768px) {
+  /* Reduce expensive operations on mobile */
+  .tour-card:hover,
+  .destination-card:hover {
+    transform: none;
+  }
+  
+  /* Simplify shadows on mobile */
+  .tour-card,
+  .destination-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Critical above-the-fold optimizations */
+.hero-section {
+  contain: layout style paint;
+}
+
+.navbar {
+  contain: layout style;
+}
+
+/* Lazy loading optimizations */
+.image-placeholder {
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.loaded {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.loading {
+  opacity: 0;
+}

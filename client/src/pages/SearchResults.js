@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import TourCard from '../components/TourCard';
+import OptimizedImage from '../components/OptimizedImage';
 import { apiConfig } from '../config/api';
 import '../styles/pages/SearchResults.css';
 
@@ -138,10 +139,13 @@ const SearchResults = () => {
             <div className="destinations-grid">
               {searchResults.destinations.map(destination => (
                 <div key={destination._id} className="destination-card">
-                  <img 
+                  <OptimizedImage 
                     src={destination.image || 'https://placehold.co/300x200?text=Destination'} 
                     alt={destination.name} 
                     className="destination-image"
+                    width="350"
+                    height="220"
+                    loading="lazy"
                   />
                   <div className="destination-info">
                     <h3>{destination.name}</h3>

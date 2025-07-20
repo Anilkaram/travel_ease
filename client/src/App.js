@@ -2,24 +2,31 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Destinations from './pages/Destinations';
-import Tours from './pages/Tours';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import SearchResults from './pages/SearchResults';
+import withLazyLoading from './components/LazyWrapper';
+import RoutePreloader from './components/RoutePreloader';
+import PerformanceMonitor from './components/PerformanceMonitor';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './styles/main.css';
+
+// Lazy load components for better performance
+const Home = withLazyLoading(() => import('./pages/Home'));
+const Login = withLazyLoading(() => import('./pages/Login'));
+const Register = withLazyLoading(() => import('./pages/Register'));
+const Destinations = withLazyLoading(() => import('./pages/Destinations'));
+const Tours = withLazyLoading(() => import('./pages/Tours'));
+const About = withLazyLoading(() => import('./pages/About'));
+const Contact = withLazyLoading(() => import('./pages/Contact'));
+const SearchResults = withLazyLoading(() => import('./pages/SearchResults'));
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="app">
+          <PerformanceMonitor />
           <Navbar />
+          <RoutePreloader />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/destinations" element={<Destinations />} />
