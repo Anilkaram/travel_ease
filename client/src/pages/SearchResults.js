@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import TourCard from '../components/TourCard';
 import OptimizedImage from '../components/OptimizedImage';
 import { apiConfig } from '../config/api';
+import { images } from '../utils/images';
 import '../styles/pages/SearchResults.css';
 
 const SearchResults = () => {
@@ -16,6 +17,26 @@ const SearchResults = () => {
   const [error, setError] = useState(null);
   
   const query = searchParams.get('q') || '';
+
+  // Function to get proper destination image URL
+  const getDestinationImageUrl = (destination) => {
+    if (destination.image && destination.image.startsWith('http') && !destination.image.includes('placehold')) {
+      return destination.image;
+    }
+    
+    // Map destination name to proper images
+    const name = destination.name?.toLowerCase() || '';
+    
+    if (name.includes('paris')) return images.paris;
+    if (name.includes('rome')) return images.rome;
+    if (name.includes('bali')) return images.bali;
+    if (name.includes('tokyo')) return images.tokyo;
+    if (name.includes('new york')) return images.newYork;
+    if (name.includes('sydney')) return images.sydney;
+    
+    // Default fallback
+    return 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&q=80';
+  };
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -140,7 +161,7 @@ const SearchResults = () => {
               {searchResults.destinations.map(destination => (
                 <div key={destination._id} className="destination-card">
                   <OptimizedImage 
-                    src={destination.image || 'https://placehold.co/300x200?text=Destination'} 
+                    src={getDestinationImageUrl(destination)} 
                     alt={destination.name} 
                     className="destination-image"
                     width="350"

@@ -53,7 +53,15 @@ const OptimizedImage = ({
   const handleError = () => {
     console.warn(`Failed to load image: ${currentSrc}`);
     
-    // Try fallback strategies
+    // If it's a placeholder.co URL that failed, use Unsplash fallback
+    if (currentSrc.includes('placehold.co') || currentSrc.includes('placeholder.com')) {
+      const fallbackSrc = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=80';
+      console.log(`Trying fallback for placeholder: ${fallbackSrc}`);
+      setCurrentSrc(fallbackSrc);
+      return;
+    }
+    
+    // Try fallback strategies for local images
     if (currentSrc.startsWith('/images/')) {
       // Try without leading slash
       const fallbackSrc = currentSrc.substring(1);
