@@ -32,4 +32,11 @@ const tourSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+// Index for text search
+tourSchema.index({ title: 'text', description: 'text', location: 'text' });
+
+// Index for case-insensitive search
+tourSchema.index({ title: 1 });
+tourSchema.index({ location: 1 });
+
 module.exports = mongoose.model('Tour', tourSchema);

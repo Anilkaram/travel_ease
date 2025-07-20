@@ -9,6 +9,7 @@ import Destinations from './pages/Destinations';
 import Tours from './pages/Tours';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import SearchResults from './pages/SearchResults';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './styles/main.css';
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/tours" element={<Tours />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/about" element={<About />} />
             {/* Protected route - only accessible when logged in */}
             <Route path="/contact" element={

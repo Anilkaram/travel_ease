@@ -21,6 +21,9 @@ const tourController = require('../controllers/tourController');
 
 const router = express.Router();
 
+// GET /api/tours/search
+router.get('/search', tourController.searchTours);
+
 router.route('/')
   .get(tourController.getAllTours);
 

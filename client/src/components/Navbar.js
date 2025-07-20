@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import SearchBar from './SearchBar';
 import '../styles/components/Navbar.css';
 import { images } from '../utils/images';
 
@@ -23,6 +24,10 @@ const Navbar = () => {
         <Link to="/" className="navbar-logo">
           <img src={images.logo} alt="TravelEase Logo" style={{height: '40px'}} />
         </Link>
+
+        <div className="navbar-search">
+          <SearchBar />
+        </div>
 
         <div className="mobile-menu-icon" onClick={toggleMenu}>
           {isMenuOpen ? (

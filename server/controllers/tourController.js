@@ -1,5 +1,45 @@
 const Tour = require('../models/Tour');
 
+// Search tours
+exports.searchTours = async (req, res) => {
+  try {
+    const { q } = req.query;
+    console.log('Tour search query received:', q);
+
+    if (!q) {
+      return res.status(200).json({
+        status: 'success',
+        data: []
+      });
+    }
+
+    // Create case-insensitive regex for searching
+    const searchRegex = new RegExp(q.trim(), 'i');
+    
+    const tours = await Tour.find({
+      $or: [
+        { title: searchRegex },
+        { description: searchRegex },
+        { location: searchRegex }
+      ]
+    });
+
+    console.log(`Found ${tours.length} tours for query "${q}"`);
+
+    res.status(200).json({
+      status: 'success',
+      count: tours.length,
+      data: tours
+    });
+  } catch (err) {
+    console.error('Tour search error:', err);
+    res.status(500).json({
+      status: 'error',
+      message: err.message
+    });
+  }
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find();
