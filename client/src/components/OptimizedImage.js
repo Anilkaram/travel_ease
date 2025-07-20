@@ -13,7 +13,14 @@ const OptimizedImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
   const imgRef = useRef(null);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setHasError(false);
+    setIsLoaded(false);
+  }, [src]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,6 +51,26 @@ const OptimizedImage = ({
   };
 
   const handleError = () => {
+    console.warn(`Failed to load image: ${currentSrc}`);
+    
+    // Try fallback strategies
+    if (currentSrc.startsWith('/images/')) {
+      // Try without leading slash
+      const fallbackSrc = currentSrc.substring(1);
+      console.log(`Trying fallback: ${fallbackSrc}`);
+      setCurrentSrc(fallbackSrc);
+      return;
+    }
+    
+    if (currentSrc.startsWith('images/')) {
+      // Try with leading slash
+      const fallbackSrc = '/' + currentSrc;
+      console.log(`Trying fallback: ${fallbackSrc}`);
+      setCurrentSrc(fallbackSrc);
+      return;
+    }
+    
+    // Final fallback to placeholder
     setHasError(true);
     setIsLoaded(true);
   };
@@ -58,6 +85,7 @@ const OptimizedImage = ({
     justifyContent: 'center',
     color: '#999',
     fontSize: '14px',
+    minHeight: height || '200px',
     ...style
   };
 
@@ -67,8 +95,12 @@ const OptimizedImage = ({
         className={`${className} image-error`}
         style={placeholderStyle}
         ref={imgRef}
+        title={`Failed to load: ${alt}`}
       >
-        Failed to load image
+        <div style={{ textAlign: 'center' }}>
+          <i className="fas fa-image" style={{ fontSize: '2em', marginBottom: '8px', display: 'block' }}></i>
+          Image not available
+        </div>
       </div>
     );
   }
@@ -80,12 +112,15 @@ const OptimizedImage = ({
           className={`${className} image-placeholder`}
           style={placeholderStyle}
         >
-          Loading...
+          <div style={{ textAlign: 'center' }}>
+            <i className="fas fa-spinner fa-spin" style={{ fontSize: '1.5em', marginBottom: '8px', display: 'block' }}></i>
+            Loading...
+          </div>
         </div>
       )}
       {(isInView || loading === 'eager') && (
         <img
-          src={src}
+          src={currentSrc}
           alt={alt}
           className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
           style={{
@@ -94,7 +129,10 @@ const OptimizedImage = ({
             transition: 'opacity 0.3s ease-in-out',
             position: isLoaded ? 'static' : 'absolute',
             top: 0,
-            left: 0
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
           }}
           width={width}
           height={height}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import OptimizedImage from './OptimizedImage';
+import SmartImage from './SmartImage';
 import '../styles/components/PopularDestinations.css';
 import { images } from '../utils/images';
 
@@ -9,37 +9,37 @@ const PopularDestinations = () => {
     {
       id: 1,
       name: 'Paris',
-      image: images.paris,
+      imageKey: 'paris',
       tours: 24
     },
     {
       id: 2,
       name: 'Rome',
-      image: images.rome,
+      imageKey: 'rome',
       tours: 18
     },
     {
       id: 3,
       name: 'Bali',
-      image: images.bali,
+      imageKey: 'bali',
       tours: 15
     },
     {
       id: 4,
       name: 'Tokyo',
-      image: images.tokyo,
+      imageKey: 'tokyo',
       tours: 12
     },
     {
       id: 5,
       name: 'New York',
-      image: images.newYork,
+      imageKey: 'newYork',
       tours: 20
     },
     {
       id: 6,
       name: 'Sydney',
-      image: images.sydney,
+      imageKey: 'sydney',
       tours: 14
     }
   ];
@@ -53,8 +53,8 @@ const PopularDestinations = () => {
         <div className="destinations-grid">
           {destinations.map(destination => (
             <div key={destination.id} className="destination-card">
-              <OptimizedImage 
-                src={destination.image} 
+              <SmartImage 
+                imageKey={destination.imageKey}
                 alt={destination.name} 
                 className="destination-image"
                 width="350"

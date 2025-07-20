@@ -1,16 +1,9 @@
 // API configuration
 // In containerized environment with nginx proxy, use relative URLs
 const getApiBaseUrl = () => {
-  // Check if we're running in a containerized environment (port 80 suggests nginx proxy)
-  const isContainerized = window.location.port === '80' || window.location.port === '';
-  
-  if (isContainerized) {
-    // Use relative URLs so nginx can proxy to the backend
-    return '';
-  }
-  
-  // For local development (non-containerized)
-  return process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  // Always use relative URLs for API calls in containerized environment
+  // Nginx will handle the proxying
+  return '';
 };
 
 const API_BASE_URL = getApiBaseUrl();

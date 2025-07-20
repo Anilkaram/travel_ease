@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute';
 import withLazyLoading from './components/LazyWrapper';
 import RoutePreloader from './components/RoutePreloader';
 import PerformanceMonitor from './components/PerformanceMonitor';
+import ImageDebugger from './components/ImageDebugger';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './styles/main.css';
@@ -43,6 +44,8 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
+          <ImageDebugger />
+          <PerformanceMonitor />
         </div>
       </Router>
     </AuthProvider>

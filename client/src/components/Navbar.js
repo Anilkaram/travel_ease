@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import SearchBar from './SearchBar';
+import SmartImage from './SmartImage';
 import '../styles/components/Navbar.css';
 import { images } from '../utils/images';
 
@@ -22,7 +23,12 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={images.logo} alt="TravelEase Logo" style={{height: '40px'}} />
+          <SmartImage 
+            imageKey="logo" 
+            alt="TravelEase Logo" 
+            style={{height: '40px'}}
+            loading="eager"
+          />
         </Link>
 
         <div className="navbar-search">
