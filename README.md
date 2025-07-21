@@ -42,7 +42,7 @@ kubectl get events -n dev --sort-by='.lastTimestamp'
 kubectl logs -n dev -l app=travel-client --tail=50<img width="883" height="829" alt="image" src="https://github.com/user-attachments/assets/486fee5c-7ff4-43ae-bc16-ed51ab80dbd9" />
 
 # helm history 
-![Uploading image.png…]()
+<img width="1920" height="152" alt="Screenshot (277)" src="https://github.com/user-attachments/assets/ddb1aac1-e567-4390-bb17-eefe01bc20da" />
 
 # grafana dashboard 
 <img width="1920" height="1080" alt="Screenshot (275)" src="https://github.com/user-attachments/assets/103624b3-00c4-40e5-aecd-f20a535bb79d" />
