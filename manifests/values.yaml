@@ -3,7 +3,7 @@ client:
   tag: client
   replicas: 1
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
 
 server:
