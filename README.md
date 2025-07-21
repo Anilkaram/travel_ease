@@ -1,3 +1,3 @@
-# feature 2
+# feature 3
 
-code with authenication and proper running containers in docker, but not in k8s
+with more features added like search compoenent 
