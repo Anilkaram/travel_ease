@@ -13,11 +13,10 @@ code with authenication and proper running containers in docker, but not in k8s
 <img width="1920" height="1080" alt="Screenshot (270)" src="https://github.com/user-attachments/assets/9f20473a-9ef3-461c-ab18-cf42c3972f92" />
 # Email notifier of pipeline status
 <img width="1580" height="455" alt="Screenshot 2025-07-19 211753" src="https://github.com/user-attachments/assets/d50a6d85-4053-4d61-ae90-50cd76a225e5" />
-
+# integrating K8SGPT 
+<img width="1919" height="429" alt="Screenshot 2025-07-20 225953" src="https://github.com/user-attachments/assets/30225894-8eac-4c52-9585-9873b37357a9" />
 <img width="1920" height="1080" alt="Screenshot (260)" src="https://github.com/user-attachments/assets/f12066cc-5df0-419b-9b7f-8e291b055df6" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/80a10cb6-f25a-4ef8-8cf5-a1d039d60949" />
-
-
 # Version -1
 <img width="1920" height="1080" alt="Screenshot (252)" src="https://github.com/user-attachments/assets/2fbfd0f5-96b9-43f9-94c7-a29132bc8fe4" />
 
