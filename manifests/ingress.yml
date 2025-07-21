@@ -10,8 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/load-balance: "round_robin"
 spec:
   rules:
-    - host: "{{ .Values.ingress.host }}"
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix

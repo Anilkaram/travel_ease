@@ -57,7 +57,6 @@ resources:
 
 ingress:
   enabled: true
-  host: "travel-ease.local"
   className: nginx
   annotations:
     kubernetes.io/ingress.class: nginx
