@@ -66,8 +66,6 @@
   This methodical process allowed you to safely test your new application
   version with a subset of users before rolling it out to everyone, minimizing
   risk and ensuring a smooth transition.
-<img width="668" height="1299" alt="image" src="https://github.com/user-attachments/assets/b3ca19a5-5ea8-4e2e-8865-49c28543c8f7" />
-
 
 # grafana dashboard 
 <img width="1920" height="1080" alt="Screenshot (275)" src="https://github.com/user-attachments/assets/103624b3-00c4-40e5-aecd-f20a535bb79d" />
