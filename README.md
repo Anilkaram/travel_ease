@@ -43,8 +43,6 @@
 
   to increase weight :
   kubectl patch ingress travel-ingress-canary -n dev --patch '{"metadata":{"annotations":{"nginx.ingress.kubernetes.io/canary-weight":"50"}}}'
-  <img width="1129" height="46" alt="image" src="https://github.com/user-attachments/assets/f764bfa7-0704-4587-8222-8a213e570727" />
-
 
   ### Phase 4: Full Production Rollout
 
