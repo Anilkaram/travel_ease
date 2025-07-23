@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: "{{ .Release.Name }}-client"
+spec:
+  selector: 
+    matchLabels:
+      app: "{{ .Release.Name }}-client"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-client"
+        track: stable
+    spec:
+      initContainers:
+      - name: wait-for-server
+        image: busybox:1.35
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for Server to be ready..."
+          until nc -z {{ .Release.Name }}-server-service 80; do
+            echo "Server not ready, waiting..."
+            sleep 5
+          done
+          echo "Server is ready!"
+      containers:
+      - name: client
+        image: "{{ .Values.client.image }}:{{ .Values.client.tag }}"
+        ports:
+        - containerPort: 80
+        env:
+        - name: NODE_ENV
+          valueFrom: 
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-client-config"
+              key: NODE_ENV
+        - name: REACT_APP_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-client-config"
+              key: REACT_APP_API_URL
+        - name: API_BACKEND
+          value: "{{ .Release.Name }}-server-service:80"  # Kubernetes service name and port
+        resources:
+          requests:
+            cpu: {{ .Values.resources.client.requests.cpu }}
+            memory: {{ .Values.resources.client.requests.memory }}
+          limits:
+            cpu: {{ .Values.resources.client.limits.cpu }}
+            memory: {{ .Values.resources.client.limits.memory }}
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+    #  imagePullSecrets:
+    #  - name: ecr-cred
+      

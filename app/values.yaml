@@ -1,0 +1,83 @@
+client:
+  image: anildoc143/travel_ease_website_v4
+  tag: client
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80
+
+clientCanary:
+  image: anildoc143/travel_ease_website_v4
+  tag: client
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80
+
+server:
+  image: anildoc143/travel_ease_website_v4
+  tag: server
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80
+
+serverCanary:
+  image: anildoc143/travel_ease_website_v4
+  tag: server
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 80
+
+mongo:
+  image: mongo
+  tag: "5.0"
+  service:
+    type: ClusterIP
+    port: 27017
+  storage:
+    size: 2Gi
+    storageClass: gp3
+
+# Global configuration
+global:
+  namespace: prod
+  
+# Environment-specific settings
+environment: development
+
+# Resource limits
+resources:
+  client:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  server:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+  mongo:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+ingress:
+  enabled: true
+  className: nginx
+  canary:
+    enable: false
+    trafficWeight: 0 
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"

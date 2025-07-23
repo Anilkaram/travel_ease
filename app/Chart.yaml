@@ -1,0 +1,6 @@
+apiVersion: v2
+name: application
+description: A Helm chart update for new version with traffic to 100%
+type: application
+version: 0.1.7
+appVersion: "1.16.7"

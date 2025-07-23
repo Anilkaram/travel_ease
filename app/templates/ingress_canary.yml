@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: travel-ingress-canary
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/canary: "{{ .Values.ingress.canary.enable}}"
+    nginx.ingress.kubernetes.io/canary-weight: "{{ .Values.ingress.canary.trafficWeight }}"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: "{{ .Release.Name }}-canary-client-service" 
+            port:
+              number: 80

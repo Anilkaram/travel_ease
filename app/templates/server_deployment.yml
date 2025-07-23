@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: "{{ .Release.Name }}-server"
+spec:
+  selector: 
+    matchLabels:
+      app: "{{ .Release.Name }}-server"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-server"
+        track: stable
+    spec:
+      initContainers:
+      - name: wait-for-mongo
+        image: busybox:1.35
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Waiting for MongoDB to be ready..."
+          until nc -z {{ .Release.Name }}-mongo-service 27017; do
+            echo "MongoDB not ready, waiting..."
+            sleep 5
+          done
+          echo "MongoDB is ready!"
+      containers:
+      - name: server
+        image: "{{ .Values.server.image }}:{{ .Values.server.tag }}"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-server-secret"
+              key: NODE_ENV
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-server-secret"
+              key: MONGO_URI
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: "{{ .Release.Name }}-server-secret"
+              key: JWT_SECRET
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 45
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+        resources:
+          requests:
+            cpu: {{ .Values.resources.server.requests.cpu }}
+            memory: {{ .Values.resources.server.requests.memory }}
+          limits:
+            cpu: {{ .Values.resources.server.limits.cpu }}
+            memory: {{ .Values.resources.server.limits.memory }}
+   #   imagePullSecrets:
+    #  - name: ecr-cred
