@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: app-virtualservice
+spec:
+  hosts:
+  - "*" # Must match Gateway host
+  gateways:
+  - travel-client-service # References the Gateway
+  http:
+  - route:
+    - destination:
+        host: travel-client-service # Your Kubernetes service name
+        port:
+          number: 80 # Your application port
