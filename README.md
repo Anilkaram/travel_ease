@@ -22,7 +22,7 @@ fine grained access control between services
 # Observability (kiali, Prometheus, Grafana) 
 Traffic Graph through Kiali
 <img width="1920" height="1080" alt="Screenshot (287)" src="https://github.com/user-attachments/assets/8ba91b37-fa90-4fa6-afae-4d77241ba104" />
-<img width="1920" height="1080" alt="Screenshot (284)" src="https://github.com/user-attachments/assets/91d23ace-5771-4f63-8f26-efe1f587a850" />
+<img width="1920" height="1080" alt="Screenshot (283)" src="https://github.com/user-attachments/assets/880eead6-c8ab-4edc-b8c1-282b8fbdabf4" />
 
 # Grafana 
 <img width="1920" height="1080" alt="Screenshot (285)" src="https://github.com/user-attachments/assets/a8c52e83-661a-4a24-b358-a0206634536f" />
