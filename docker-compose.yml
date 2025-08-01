@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   client:
-    image: anildoc143/travel_ease_website_v4:client
-    #build: ./client
+    #image: anildoc143/travel_ease_website_v4:client
+    build: ./client
     ports:
       - "80:80"
     environment:
@@ -18,8 +18,8 @@ services:
       - travel-network
 
   server:
-    image: anildoc143/travel_ease_website_v4:server
-    #build: ./server
+    #image: anildoc143/travel_ease_website_v4:server
+    build: ./server
     ports:
       - "5000:5000"
     environment:
