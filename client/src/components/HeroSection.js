@@ -4,10 +4,10 @@ import { images } from '../utils/images';
 
 const HeroSection = () => {
   const backgroundImages = [
-    'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&q=80',
-    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80',
-    'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80',
-    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80'
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=95&auto=format&fit=crop&ixlib=rb-4.0.3', // Bright mountain lake
+    'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=1200&q=95&auto=format&fit=crop&ixlib=rb-4.0.3', // Colorful sunset beach
+    'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=1200&q=95&auto=format&fit=crop&ixlib=rb-4.0.3', // Vibrant aurora
+    'https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=1200&q=95&auto=format&fit=crop&ixlib=rb-4.0.3'  // Bright city lights
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -30,7 +30,7 @@ const HeroSection = () => {
           key={index}
           className={`hero-background ${index === currentImageIndex ? 'active' : ''}`}
           style={{
-            background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${image}) no-repeat center center/cover`
+            background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${image}) no-repeat center center/cover`
           }}
         />
       ))}

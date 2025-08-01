@@ -11,7 +11,7 @@ export const images = {
   testimonial1: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80',
   testimonial2: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80',
   testimonial3: 'https://images.unsplash.com/photo-1551836026-d5a92c422b42?w=400&q=80',
-  logo: '/src/assets/images/logo-a.svg'
+  logo: '/images/logo-a.svg'
 };
 
 // Local paths (for future use when container issue is resolved)
