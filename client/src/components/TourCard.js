@@ -65,7 +65,7 @@ const TourCard = ({ tour }) => {
             <span className="rating-number">({tourRating})</span>
           </div>
         </div>
-        <Link to={`/tours/${tour.id}`} className="tour-btn">
+        <Link to={`/destinations/${tour.id}`} className="tour-btn">
           View Details
         </Link>
       </div>

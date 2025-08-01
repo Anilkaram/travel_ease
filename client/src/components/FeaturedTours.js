@@ -3,8 +3,8 @@ import TourCard from './TourCard';
 import '../styles/components/FeaturedTours.css';
 import { images } from '../utils/images';
 
-const FeaturedTours = () => {
-  const tours = [
+const FeaturedDestinations = () => {
+  const destinations = [
     {
       id: 1,
       title: 'Paris City Tour',
@@ -62,16 +62,16 @@ const FeaturedTours = () => {
   ];
 
   return (
-    <section className="featured-tours">
-      <h2>Featured Tours</h2>
-      <p>Check out our most popular tours</p>
-      <div className="tours-grid">
-        {tours.map(tour => (
-          <TourCard key={tour.id} tour={tour} />
+    <section className="featured-destinations">
+      <h2>Featured Destinations</h2>
+      <p>Discover our most popular travel destinations</p>
+      <div className="destinations-grid">
+        {destinations.map(destination => (
+          <TourCard key={destination.id} tour={destination} />
         ))}
       </div>
     </section>
   );
 };
 
-export default FeaturedTours;
+export default FeaturedDestinations;

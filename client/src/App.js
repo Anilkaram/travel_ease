@@ -15,7 +15,6 @@ const Home = withLazyLoading(() => import('./pages/Home'));
 const Login = withLazyLoading(() => import('./pages/Login'));
 const Register = withLazyLoading(() => import('./pages/Register'));
 const Destinations = withLazyLoading(() => import('./pages/Destinations'));
-const Tours = withLazyLoading(() => import('./pages/Tours'));
 const About = withLazyLoading(() => import('./pages/About'));
 const Contact = withLazyLoading(() => import('./pages/Contact'));
 const SearchResults = withLazyLoading(() => import('./pages/SearchResults'));
@@ -31,7 +30,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/destinations" element={<Destinations />} />
-            <Route path="/tours" element={<Tours />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/about" element={<About />} />
             {/* Protected route - only accessible when logged in */}

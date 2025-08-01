@@ -1,65 +1,74 @@
 /* client/src/components/TourCard.css */
 .tour-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .tour-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .tour-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 240px;
+  overflow: hidden;
 }
 
 .tour-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tour-card:hover .tour-image {
+  transform: scale(1.1);
 }
 
 .tour-price-badge {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: linear-gradient(135deg, #4a6bff 0%, #667eea 100%);
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-weight: 700;
   font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(74, 107, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
 }
 
 .tour-info {
-  padding: 20px;
+  padding: 28px;
 }
 
 .tour-title {
-  margin-bottom: 10px;
-  color: #2d3748;
-  font-size: 1.2rem;
-  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--gray-900);
+  font-size: 1.375rem;
+  font-weight: 700;
   line-height: 1.3;
   min-height: 1.5em;
   display: block;
   word-wrap: break-word;
+  letter-spacing: -0.01em;
 }
 
 .tour-description {
-  color: #4a5568;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: var(--gray-600);
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -71,28 +80,30 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding: 10px 0;
-  border-top: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100);
 }
 
 .tour-duration {
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: #4a5568;
+  gap: 8px;
+  color: var(--gray-600);
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .tour-duration i {
-  color: #718096;
+  color: var(--primary-color);
+  font-size: 1rem;
 }
 
 .tour-rating {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 15px;
+  gap: 10px;
 }
 
 .stars {
@@ -101,40 +112,56 @@
 }
 
 .star {
-  color: #e2e8f0;
-  font-size: 1rem;
+  color: var(--gray-200);
+  font-size: 1.1rem;
   transition: color 0.2s ease;
 }
 
 .star.filled {
-  color: #f6ad55;
+  color: #fbbf24;
 }
 
 .rating-number {
-  color: #4a5568;
+  color: var(--gray-600);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .tour-btn {
   display: inline-block;
-  background: linear-gradient(135deg, #4a6bff 0%, #667eea 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 16px 28px;
+  border-radius: 50px;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   transition: all 0.3s ease;
   width: 100%;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(74, 107, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.tour-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.tour-btn:hover::before {
+  left: 100%;
 }
 
 .tour-btn:hover {
-  background: linear-gradient(135deg, #3a56d4 0%, #5a67d8 100%);
-  box-shadow: 0 6px 20px rgba(74, 107, 255, 0.3);
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
 }
 
 @media (max-width: 768px) {
