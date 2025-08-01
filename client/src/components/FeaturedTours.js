@@ -63,12 +63,27 @@ const FeaturedDestinations = () => {
 
   return (
     <section className="featured-destinations">
-      <h2>Featured Destinations</h2>
-      <p>Discover our most popular travel destinations</p>
-      <div className="destinations-grid">
-        {destinations.map(destination => (
-          <TourCard key={destination.id} tour={destination} />
-        ))}
+      <div className="container">
+        <div className="section-header">
+          <div className="section-badge">
+            <i className="fas fa-map-marked-alt"></i>
+            <span>Popular Picks</span>
+          </div>
+          <h2>Featured Destinations</h2>
+          <p>Discover breathtaking destinations that will create memories to last a lifetime</p>
+        </div>
+        <div className="destinations-grid">
+          {destinations.map(destination => (
+            <TourCard key={destination.id} tour={destination} />
+          ))}
+        </div>
+      </div>
+      
+      {/* Floating decorative elements */}
+      <div className="floating-elements">
+        <div className="floating-circle circle-1"></div>
+        <div className="floating-circle circle-2"></div>
+        <div className="floating-circle circle-3"></div>
       </div>
     </section>
   );

@@ -6,26 +6,26 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Sarah Johnson',
-      location: 'New York, USA',
-      text: 'TravelEase made our vacation unforgettable! The guides were knowledgeable and the itinerary was perfect.',
+      name: 'HemaSree',
+      location: 'Hyderabad, India',
+      text: 'TravelEase made our vacation unforgettable! The guides were knowledgeable and the itinerary was perfectly crafted. Every moment was magical and exceeded all our expectations.',
       rating: 5,
       image: images.testimonial1
     },
     {
       id: 2,
-      name: 'Michael Chen',
-      location: 'Toronto, Canada',
-      text: 'Best travel experience ever! Everything was well-organized and exceeded our expectations.',
+      name: 'Anilkumar',
+      location: 'Bangalore, India',
+      text: 'Best travel experience ever! Everything was well-organized and the attention to detail was incredible. The team went above and beyond to make our journey extraordinary.',
       rating: 5,
       image: images.testimonial2
     },
     {
       id: 3,
-      name: 'Emma Williams',
-      location: 'London, UK',
-      text: 'The tour packages are worth every penny. We will definitely book with TravelEase again!',
-      rating: 4,
+      name: 'Rakesh',
+      location: 'Mumbai, India',
+      text: 'The tour packages are worth every penny! Professional service, amazing destinations, and memories that will last a lifetime. We will definitely book with TravelEase again!',
+      rating: 5,
       image: images.testimonial3
     }
   ];
@@ -33,32 +33,53 @@ const Testimonials = () => {
   return (
     <section className="testimonials-section">
       <div className="container">
-        <h2>What Our Travelers Say</h2>
-        <p className="subtitle">Hear from our satisfied customers</p>
+        <div className="section-header">
+          <div className="section-badge">
+            <i className="fas fa-heart"></i>
+            <span>Customer Love</span>
+          </div>
+          <h2>What Our Travelers Say</h2>
+          <p className="subtitle">Real experiences from real travelers who trusted us with their dream journeys</p>
+        </div>
         
         <div className="testimonials-grid">
           {testimonials.map(testimonial => (
             <div key={testimonial.id} className="testimonial-card">
-              <div className="testimonial-header">
-                <img 
-                  src={testimonial.image} 
-                  alt={testimonial.name} 
-                  className="testimonial-image"
-                />
+              <div className="testimonial-content">
+                <div className="quote-icon">
+                  <i className="fas fa-quote-left"></i>
+                </div>
+                <p className="testimonial-text">"{testimonial.text}"</p>
+                <div className="testimonial-rating">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <span key={i} className="star">★</span>
+                  ))}
+                </div>
+              </div>
+              <div className="testimonial-footer">
+                <div className="testimonial-avatar">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name} 
+                    className="testimonial-image"
+                  />
+                  <div className="avatar-ring"></div>
+                </div>
                 <div className="testimonial-author">
                   <h4>{testimonial.name}</h4>
                   <p>{testimonial.location}</p>
                 </div>
               </div>
-              <p className="testimonial-text">"{testimonial.text}"</p>
-              <div className="testimonial-rating">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <span key={i} className="star">★</span>
-                ))}
-              </div>
             </div>
           ))}
         </div>
+      </div>
+      
+      {/* Background decorative elements */}
+      <div className="testimonials-bg">
+        <div className="bg-shape shape-1"></div>
+        <div className="bg-shape shape-2"></div>
+        <div className="bg-shape shape-3"></div>
       </div>
     </section>
   );

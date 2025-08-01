@@ -47,30 +47,53 @@ const PopularDestinations = () => {
   return (
     <section className="popular-destinations">
       <div className="container">
-        <h2>Popular Destinations</h2>
-        <p>Explore our most popular travel destinations</p>
+        <div className="section-header">
+          <div className="section-badge">
+            <i className="fas fa-globe-americas"></i>
+            <span>Trending Now</span>
+          </div>
+          <h2>Popular Destinations</h2>
+          <p>Discover the world's most sought-after travel destinations, handpicked by our travel experts</p>
+        </div>
         
         <div className="destinations-grid">
           {destinations.map(destination => (
             <div key={destination.id} className="destination-card">
-              <SmartImage 
-                imageKey={destination.imageKey}
-                alt={destination.name} 
-                className="destination-image"
-                width="350"
-                height="200"
-                loading="lazy"
-              />
+              <div className="card-image-wrapper">
+                <SmartImage 
+                  imageKey={destination.imageKey}
+                  alt={destination.name} 
+                  className="destination-image"
+                  width="350"
+                  height="200"
+                  loading="lazy"
+                />
+                <div className="image-overlay">
+                  <div className="tours-badge">
+                    <i className="fas fa-map-marker-alt"></i>
+                    <span>{destination.tours} tours</span>
+                  </div>
+                </div>
+              </div>
               <div className="destination-info">
                 <h3>{destination.name}</h3>
-                <p>{destination.tours} tours available</p>
+                <p className="tours-text">{destination.tours} amazing experiences await</p>
                 <Link to={`/destinations/${destination.id}`} className="explore-btn">
-                  Explore
+                  <span>Explore Now</span>
+                  <i className="fas fa-arrow-right"></i>
                 </Link>
               </div>
             </div>
           ))}
         </div>
+      </div>
+      
+      {/* Background decorative elements */}
+      <div className="bg-pattern">
+        <div className="pattern-dot"></div>
+        <div className="pattern-dot"></div>
+        <div className="pattern-dot"></div>
+        <div className="pattern-dot"></div>
       </div>
     </section>
   );
