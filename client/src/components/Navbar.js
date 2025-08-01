@@ -52,7 +52,7 @@ const Navbar = () => {
           <SmartImage 
             imageKey="logo" 
             alt="TravelEase Logo" 
-            style={{height: '40px'}}
+            style={{height: '44px'}}
             loading="eager"
           />
         </Link>
