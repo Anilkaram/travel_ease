@@ -5,6 +5,8 @@
   color: white;
   position: relative;
   overflow: hidden;
+  margin-top: -80px; /* Offset the body padding to make hero full height */
+  padding-top: 80px; /* Add padding back for content positioning */
 }
 
 .hero-background {
