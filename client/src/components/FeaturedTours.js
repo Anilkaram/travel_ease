@@ -11,7 +11,8 @@ const FeaturedTours = () => {
       image: images.paris,
       duration: '7 Days',
       price: '$1200',
-      rating: 4.8
+      rating: 4.8,
+      description: 'Explore the romantic streets of Paris, visit the Eiffel Tower, Louvre Museum, and enjoy French cuisine in charming cafes.'
     },
     {
       id: 2,
@@ -19,7 +20,8 @@ const FeaturedTours = () => {
       image: images.rome,
       duration: '10 Days',
       price: '$1800',
-      rating: 4.9
+      rating: 4.9,
+      description: 'Discover the rich history and culture of Italy, from ancient Rome to the Renaissance art of Florence and Venice.'
     },
     {
       id: 3,
@@ -27,7 +29,8 @@ const FeaturedTours = () => {
       image: images.bali,
       duration: '8 Days',
       price: '$1500',
-      rating: 4.7
+      rating: 4.7,
+      description: 'Relax on pristine beaches, explore ancient temples, and experience the unique culture and hospitality of Bali.'
     },
     {
       id: 4,
@@ -35,7 +38,8 @@ const FeaturedTours = () => {
       image: images.tokyo,
       duration: '6 Days',
       price: '$1700',
-      rating: 4.6
+      rating: 4.6,
+      description: 'Experience the perfect blend of traditional culture and modern technology in Japan\'s vibrant capital city.'
     },
     {
       id: 5,
@@ -43,7 +47,8 @@ const FeaturedTours = () => {
       image: images.newYork,
       duration: '5 Days',
       price: '$1600',
-      rating: 4.8
+      rating: 4.8,
+      description: 'See the best of the Big Apple including Times Square, Central Park, Statue of Liberty, and Broadway shows.'
     },
     {
       id: 6,
@@ -51,7 +56,8 @@ const FeaturedTours = () => {
       image: images.sydney,
       duration: '7 Days',
       price: '$1550',
-      rating: 4.7
+      rating: 4.7,
+      description: 'Experience the stunning harbor city with its iconic Opera House, beautiful beaches, and vibrant culture.'
     },
   ];
 

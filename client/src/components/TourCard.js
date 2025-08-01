@@ -26,29 +26,44 @@ const TourCard = ({ tour }) => {
     return 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=80';
   };
 
+  // Ensure all required data is available with fallbacks
+  const tourTitle = tour.title || tour.name || 'Adventure Tour';
+  const tourPrice = tour.price || '$999';
+  const tourDuration = tour.duration || '5 Days';
+  const tourRating = tour.rating || 4.5;
+  const tourDescription = tour.description || 'Experience an amazing adventure with breathtaking views and unforgettable memories.';
+
   return (
     <div className="tour-card">
-      <OptimizedImage 
-        src={getImageUrl(tour)} 
-        alt={tour.title} 
-        className="tour-image"
-        width="300"
-        height="200"
-        loading="lazy"
-      />
+      <div className="tour-image-container">
+        <OptimizedImage 
+          src={getImageUrl(tour)} 
+          alt={tourTitle} 
+          className="tour-image"
+          width="300"
+          height="200"
+          loading="lazy"
+        />
+        <div className="tour-price-badge">{tourPrice}</div>
+      </div>
       <div className="tour-info">
-        <h3>{tour.title}</h3>
-        <p className="tour-description">{tour.description}</p>
+        <h3 className="tour-title">{tourTitle}</h3>
+        <p className="tour-description">{tourDescription}</p>
         <div className="tour-meta">
-          <span className="tour-duration">{tour.duration}</span>
-          <span className="tour-price">{tour.price}</span>
-        </div>
-        <div className="tour-rating">
-          {[...Array(5)].map((_, i) => (
-            <span key={i} className={`star ${i < tour.rating ? 'filled' : ''}`}>
-              ★
-            </span>
-          ))}
+          <div className="tour-duration">
+            <i className="fas fa-clock"></i>
+            <span>{tourDuration}</span>
+          </div>
+          <div className="tour-rating">
+            <div className="stars">
+              {[...Array(5)].map((_, i) => (
+                <span key={i} className={`star ${i < Math.floor(tourRating) ? 'filled' : ''}`}>
+                  ★
+                </span>
+              ))}
+            </div>
+            <span className="rating-number">({tourRating})</span>
+          </div>
         </div>
         <Link to={`/tours/${tour.id}`} className="tour-btn">
           View Details
