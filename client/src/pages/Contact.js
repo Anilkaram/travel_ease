@@ -46,11 +46,6 @@ const Contact = () => {
           <h1>Contact Us</h1>
           <p className="hero-subtitle">Your next adventure starts with a conversation</p>
         </div>
-        <div className="hero-background">
-          <div className="floating-shape shape-1"></div>
-          <div className="floating-shape shape-2"></div>
-          <div className="floating-shape shape-3"></div>
-        </div>
       </div>
 
       <div className="contact-container">

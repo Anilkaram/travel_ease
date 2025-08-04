@@ -77,49 +77,6 @@
   margin-top: 40px; /* Reduced from 60px */
 }
 
-/* Floating decorative elements */
-.floating-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.floating-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-  backdrop-filter: blur(20px);
-  animation: float 6s ease-in-out infinite;
-}
-
-.circle-1 {
-  width: 200px;
-  height: 200px;
-  top: 10%;
-  right: 5%;
-  animation-delay: 0s;
-}
-
-.circle-2 {
-  width: 150px;
-  height: 150px;
-  bottom: 20%;
-  left: 8%;
-  animation-delay: 2s;
-}
-
-.circle-3 {
-  width: 100px;
-  height: 100px;
-  top: 60%;
-  right: 15%;
-  animation-delay: 4s;
-}
-
 @keyframes float {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
@@ -161,10 +118,6 @@
   .section-badge {
     padding: 10px 20px;
     font-size: 0.8rem;
-  }
-  
-  .floating-circle {
-    display: none;
   }
 }
 

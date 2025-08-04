@@ -74,13 +74,6 @@ const Testimonials = () => {
           ))}
         </div>
       </div>
-      
-      {/* Background decorative elements */}
-      <div className="testimonials-bg">
-        <div className="bg-shape shape-1"></div>
-        <div className="bg-shape shape-2"></div>
-        <div className="bg-shape shape-3"></div>
-      </div>
     </section>
   );
 };

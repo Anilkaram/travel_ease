@@ -9,6 +9,11 @@
   overflow: hidden;
 }
 
+/* Background decorative elements - DISABLED */
+.testimonials-bg {
+  display: none;
+}
+
 .testimonials-section .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -225,11 +230,7 @@
 }
 
 .bg-shape {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(16, 185, 129, 0.08));
-  animation: float 8s ease-in-out infinite;
-  opacity: 0.6;
+  display: none;
 }
 
 .shape-1 {
