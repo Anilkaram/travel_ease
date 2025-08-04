@@ -6,5 +6,5 @@ provisioner: k8s.io/minikube-hostpath  # For minikube
 parameters:
   type: DirectoryOrCreate
 volumeBindingMode: Immediate
- allowVolumeExpansion: true
- reclaimPolicy: Delete
+allowVolumeExpansion: true
+reclaimPolicy: Delete
