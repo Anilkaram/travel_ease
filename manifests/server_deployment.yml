@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: anildoc143/travel_ease_website_v2:server
+        image: anildoc143/travel_ease_website_v5:server
         ports:
         - containerPort: 5000
         env:
