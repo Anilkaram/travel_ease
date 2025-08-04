@@ -4,7 +4,7 @@
     rgba(168, 85, 247, 0.03) 50%, 
     rgba(59, 130, 246, 0.03) 100%
   );
-  padding: 120px 0;
+  padding: 80px 0; /* Reduced from 120px */
   position: relative;
   overflow: hidden;
 }
@@ -17,7 +17,7 @@
 
 .section-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 50px; /* Reduced from 80px */
   position: relative;
 }
 
@@ -72,9 +72,9 @@
 
 .destinations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 40px;
-  margin-top: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Reduced from 380px */
+  gap: 24px; /* Reduced from 40px */
+  margin-top: 40px; /* Reduced from 60px */
 }
 
 /* Floating decorative elements */
@@ -135,18 +135,29 @@
 @media (max-width: 1200px) {
   .destinations-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
+    gap: 20px; /* Reduced from 30px */
   }
 }
 
 @media (max-width: 768px) {
   .featured-destinations {
-    padding: 80px 0;
+    padding: 60px 0; /* Reduced from 80px */
   }
   
   .featured-destinations .container {
     padding: 0 20px;
   }
+  
+  .section-header {
+    margin-bottom: 40px; /* Reduced from 60px */
+  }
+  
+  .destinations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 30px;
+  }
+}
   
   .section-header {
     margin-bottom: 60px;
@@ -170,10 +181,15 @@
 
 @media (max-width: 480px) {
   .featured-destinations {
-    padding: 60px 0;
+    padding: 50px 0; /* Reduced from 60px */
   }
   
   .section-header {
-    margin-bottom: 40px;
+    margin-bottom: 30px; /* Reduced from 40px */
+  }
+  
+  .destinations-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
