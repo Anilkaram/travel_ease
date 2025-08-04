@@ -49,7 +49,7 @@
 }
 
 .featured-destinations h2 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.875rem, 4vw, 2.5rem); /* Reduced from clamp(2.5rem, 5vw, 4rem) */
   font-weight: 800;
   color: var(--gray-900);
   margin-bottom: 24px;
@@ -62,7 +62,7 @@
 }
 
 .featured-destinations p {
-  font-size: 1.25rem;
+  font-size: 1rem; /* Reduced from 1.25rem */
   color: var(--gray-600);
   max-width: 600px;
   margin: 0 auto;

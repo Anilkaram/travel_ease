@@ -46,7 +46,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 80px; /* Account for fixed navbar */
+  padding-top: 60px; /* Reduced from 80px to match smaller navbar */
 }
 
 .container {
@@ -66,11 +66,11 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 1.875rem; /* 30px - reduced from 40px */
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.5rem; /* 24px - reduced from 32px */
 }
 
 .btn {
@@ -128,11 +128,11 @@ h2 {
 /* Modern responsive design */
 @media (max-width: 768px) {
   .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Reduced from 2.5rem */
   }
   
   .hero-content p {
-    font-size: 1.2rem;
+    font-size: 1rem; /* Reduced from 1.2rem */
   }
   
   .search-box {

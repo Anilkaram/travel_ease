@@ -18,7 +18,7 @@
 .search-header h1 {
   color: var(--primary-color, #4a6bff);
   margin-bottom: 10px;
-  font-size: 2.5rem;
+  font-size: 1.875rem; /* Reduced from 2.5rem */
   font-weight: 600;
 }
 
@@ -66,7 +66,7 @@
 }
 
 .no-query i, .no-results i {
-  font-size: 4rem;
+  font-size: 2.5rem; /* Reduced from 4rem */
   color: #e2e8f0;
   margin-bottom: 20px;
 }
@@ -309,7 +309,7 @@
   }
   
   .no-query i, .no-results i {
-    font-size: 3rem;
+    font-size: 2rem; /* Reduced from 3rem */
   }
   
   .destination-info {

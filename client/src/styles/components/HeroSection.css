@@ -5,8 +5,8 @@
   color: white;
   position: relative;
   overflow: hidden;
-  margin-top: -80px; /* Offset the body padding to make hero full height */
-  padding-top: 80px; /* Add padding back for content positioning */
+  margin-top: -60px; /* Updated to match smaller navbar height */
+  padding-top: 60px; /* Updated to match smaller navbar height */
 }
 
 .hero-background {
@@ -35,7 +35,7 @@
 }
 
 .hero-content h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(2rem, 4vw, 3rem); /* Reduced from clamp(2.5rem, 6vw, 4.5rem) */
   font-weight: 800;
   margin-bottom: 1.5rem;
   background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
@@ -47,7 +47,7 @@
 }
 
 .hero-content p {
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-size: clamp(1rem, 2vw, 1.25rem); /* Reduced from clamp(1.125rem, 2.5vw, 1.5rem) */
   margin-bottom: 3rem;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 400;
@@ -161,7 +161,7 @@
 
 @media (max-width: 768px) {
   .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Reduced from 2.5rem */
   }
   
   .hero-content p {

@@ -14,7 +14,7 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  padding: 150px 0 100px;
+  padding: 120px 0 60px; /* Reduced padding from 150px 0 100px */
   position: relative;
   overflow: hidden;
 }
@@ -46,7 +46,7 @@
 }
 
 .hero-section h1 {
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(2rem, 4vw, 3rem); /* Reduced from clamp(3rem, 6vw, 5rem) */
   font-weight: 800;
   color: white;
   margin-bottom: 24px;
@@ -55,7 +55,7 @@
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* Reduced from 1.5rem */
   color: rgba(255, 255, 255, 0.9);
   font-weight: 400;
   line-height: 1.6;
@@ -132,7 +132,7 @@
 
 /* Story Section */
 .story-section {
-  padding: 120px 0;
+  padding: 80px 0; /* Reduced from 120px */
   background: linear-gradient(135deg, 
     rgba(99, 102, 241, 0.02) 0%, 
     rgba(168, 85, 247, 0.02) 100%
@@ -147,7 +147,7 @@
 }
 
 .text-content h2 {
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem); /* Reduced from clamp(2.5rem, 4vw, 3.5rem) */
   font-weight: 800;
   color: var(--gray-900);
   margin-bottom: 32px;
@@ -156,7 +156,7 @@
 }
 
 .text-content p {
-  font-size: 1.2rem;
+  font-size: 1rem; /* Reduced from 1.2rem */
   color: var(--gray-600);
   line-height: 1.7;
   margin-bottom: 24px;
@@ -185,7 +185,7 @@
 }
 
 .stat-number {
-  font-size: 2.5rem;
+  font-size: 1.875rem; /* Reduced from 2.5rem */
   font-weight: 800;
   color: var(--primary-color);
   margin-bottom: 8px;
