@@ -157,17 +157,6 @@
     gap: 16px;
     margin-top: 30px;
   }
-}
-  
-  .section-header {
-    margin-bottom: 60px;
-  }
-  
-  .destinations-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-top: 40px;
-  }
   
   .section-badge {
     padding: 10px 20px;
