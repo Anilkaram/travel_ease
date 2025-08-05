@@ -1,0 +1,311 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -144,
+        384
+      ],
+      "id": "3c3d417a-2b0a-4a3e-8c1c-021cd42c23f6",
+      "name": "Webhook",
+      "webhookId": "b68841dd-63e4-4b54-ba05-de3f360fc5b1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Safe message extraction with error handling\nconst message = $json.message || $json.body?.message || $json.query?.message || '';\nconst userMessage = message.toString().toLowerCase();\nconst intent = detectIntent(userMessage);\n\nfunction detectIntent(message) {\n  if (!message || message.trim() === '') {\n    return 'general';\n  }\n  \n  // Greeting patterns\n  if (message.match(/^(hi|hello|hey|good morning|good afternoon|good evening)/)) {\n    return 'greeting';\n  }\n  \n  // Destination queries\n  if (message.match(/(destination|place|where|location|country|city)/)) {\n    return 'destinations';\n  }\n  \n  // Tour/package queries\n  if (message.match(/(tour|package|trip|vacation|holiday|booking)/)) {\n    return 'tours';\n  }\n  \n  // Price queries\n  if (message.match(/(price|cost|cheap|expensive|budget|affordable)/)) {\n    return 'pricing';\n  }\n  \n  // Help queries\n  if (message.match(/(help|assist|support|guide)/)) {\n    return 'help';\n  }\n  \n  return 'general';\n}\n\nreturn {\n  originalMessage: message,\n  intent: intent,\n  userQuery: userMessage,\n  debug: {\n    receivedData: $json,\n    extractedMessage: message\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        384
+      ],
+      "id": "a4e08600-6810-4bbf-8772-9efa32cbfcf0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8d01fbf2-f5f8-42a1-ab8e-2d8ca2831b4b",
+              "leftValue": "={{ $json.intent }}",
+              "rightValue": "destinations",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "9b2b93a0-5aa3-454b-975f-1fb91949fb6b",
+              "leftValue": "={{ $json.intent }}",
+              "rightValue": "pricing",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        384
+      ],
+      "id": "295c3f3b-3d40-48c2-820f-7b53b18e8694",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "console.log('Destinations Response Function - Received data:', JSON.stringify($json, null, 2));\n\nconst destinations = Array.isArray($json) ? $json : [$json].filter(Boolean);\nlet response = \"🌍 Here are our featured destinations:\\n\\n\";\n\nconsole.log('Processed destinations array:', destinations);\n\nif (destinations.length > 0) {\n  destinations.forEach((dest, index) => {\n    if (dest && dest.name && dest.location) {\n      response += `${index + 1}. **${dest.name}** - ${dest.location}\\n`;\n      response += `   ${dest.description || 'Beautiful destination'}\\n\\n`;\n    }\n  });\n  response += \"Which destination interests you most? I can show you tours for any of these!\";\n} else {\n  response = \"I'm sorry, I couldn't find any destinations right now. Please try again later.\";\n  console.log('No destinations found - returning default message');\n}\n\nconst result = {\n  response: response,\n  type: 'destinations',\n  data: destinations,\n  debug: {\n    originalData: $json,\n    processedDestinations: destinations,\n    responseGenerated: response\n  }\n};\n\nconsole.log('Destinations Response Function - Final result:', JSON.stringify(result, null, 2));\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        144
+      ],
+      "id": "15761c5f-cc26-48a3-80e8-75a7944c6680",
+      "name": "Destinations Response Function"
+    },
+    {
+      "parameters": {
+        "collection": "destinations",
+        "options": {},
+        "query": "{}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        144
+      ],
+      "id": "fe421300-858d-4873-a1d9-225303b42ac1",
+      "name": "Destinations",
+      "credentials": {
+        "mongoDb": {
+          "id": "484oO9YAX6qf5XD4",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "console.log('Pricing Response Function - Received data:', JSON.stringify($json, null, 2));\n\nconst tours = Array.isArray($json) ? $json : [$json].filter(Boolean);\nlet response = \"💰 Here are our budget-friendly options:\\n\\n\";\n\nconsole.log('Processed tours array:', tours);\n\nif (tours.length > 0) {\n  // Sort by price (safely)\n  tours.sort((a, b) => (a.price || 0) - (b.price || 0));\n  \n  tours.forEach((tour, index) => {\n    if (tour && tour.title) {\n      response += `${index + 1}. **${tour.title}** - $${tour.price || 'N/A'}\\n`;\n      response += `   📍 ${tour.location || 'Location TBD'} (${tour.duration || 'Duration TBD'})\\n\\n`;\n    }\n  });\n  response += \"These are great value tours! Need more details about any of them?\";\n} else {\n  response = \"Let me find some great deals for you! What's your budget range?\";\n  console.log('No tours found - returning default message');\n}\n\nconst result = {\n  response: response,\n  type: 'pricing',\n  data: tours,\n  debug: {\n    originalData: $json,\n    processedTours: tours,\n    responseGenerated: response\n  }\n};\n\nconsole.log('Pricing Response Function - Final result:', JSON.stringify(result, null, 2));\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        320
+      ],
+      "id": "bdb0de40-8c20-41b7-abe1-673c65e73990",
+      "name": "Pricing Response Function"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const intent = $json.intent || 'general';\nconst message = $json.originalMessage || 'No message';\n\nlet response = \"\";\n\nswitch(intent) {\n  case 'greeting':\n    response = \"👋 Hello! Welcome to TravelEase! I'm here to help you find amazing destinations and tours. What would you like to explore today?\";\n    break;\n  case 'help':\n    response = \"🤝 I can help you with:\\n• Find destinations\\n• Browse tours and packages\\n• Check pricing and deals\\n• Get travel recommendations\\n\\nJust ask me anything about travel!\";\n    break;\n  case 'tours':\n    response = \"🎒 I can help you find amazing tour packages! Ask me about destinations or budget-friendly options to see our available tours.\";\n    break;\n  default:\n    response = \"I'd be happy to help you with travel planning! You can ask me about:\\n• Popular destinations\\n• Tour packages\\n• Pricing information\\n• Travel recommendations\\n\\nWhat would you like to know?\";\n}\n\nreturn {\n  response: response,\n  type: 'general'\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        512
+      ],
+      "id": "9f655b46-725f-488b-9383-fe534ab8712e",
+      "name": "Default Response Function"
+    },
+    {
+      "parameters": {
+        "collection": "tours",
+        "options": {},
+        "query": "{}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        512,
+        320
+      ],
+      "id": "476a7990-7294-4e75-8690-fd97b281c178",
+      "name": "Pricing Branch",
+      "credentials": {
+        "mongoDb": {
+          "id": "484oO9YAX6qf5XD4",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "console.log('Code1 - Received data:', JSON.stringify($json, null, 2));\n\n// Handle single response (no merge needed)\nconst responseData = $json.response || 'I apologize, but I encountered an issue processing your request.';\nconst responseType = $json.type || 'general';\n\nconsole.log('Code1 - Extracted response:', responseData);\nconsole.log('Code1 - Response type:', responseType);\n\nconst result = {\n  success: true,\n  message: responseData,\n  type: responseType,\n  timestamp: new Date().toISOString(),\n  debug: {\n    receivedData: $json,\n    extractedResponse: responseData,\n    extractedType: responseType\n  }\n};\n\nconsole.log('Code1 - Final result:', JSON.stringify(result, null, 2));\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1312,
+        256
+      ],
+      "id": "c81aa0f1-73b8-4b39-80f2-389b6b995196",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}"
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        256
+      ],
+      "id": "respond-to-webhook-node",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Destinations",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Pricing Branch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Default Response Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Destinations Response Function": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Destinations": {
+      "main": [
+        [
+          {
+            "node": "Destinations Response Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pricing Response Function": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Response Function": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pricing Branch": {
+      "main": [
+        [
+          {
+            "node": "Pricing Response Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "906ae8b0d6e65fef7ec7602e65091a76346ba12e0087d3eea66d0edbdfc0afbc"
+  }
+}

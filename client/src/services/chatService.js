@@ -2,7 +2,7 @@
 class ChatService {
   constructor() {
     this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook-test/chat';
+    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chat';
     this.isConnected = false;
     this.isN8nConnected = false;
   }
@@ -12,11 +12,13 @@ class ChatService {
     try {
       // Check if n8n webhook is available first (preferred)
       try {
-        const n8nResponse = await fetch(this.n8nWebhookUrl.replace('/webhook/', '/webhook-test/'), {
-          method: 'GET',
+        const n8nResponse = await fetch(this.n8nWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'test connection' }),
           timeout: 3000
         });
-        this.isN8nConnected = true;
+        this.isN8nConnected = n8nResponse.ok;
         console.log('Chat service: n8n webhook connected');
       } catch (n8nError) {
         console.log('Chat service: n8n webhook not available, checking backend...');
