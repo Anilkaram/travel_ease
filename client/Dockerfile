@@ -1,43 +1,14 @@
-FROM node:18-alpine as builder
-
-# Set working directory
+FROM node:16-alpine as builder
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Clear npm cache and install dependencies with specific flags to handle deprecated warnings
-RUN npm cache clean --force && \
-    npm install --legacy-peer-deps --no-audit --no-fund --silent
-
-# Copy source code
+RUN npm install
 COPY . .
-
-# Set build environment variables
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-ENV GENERATE_SOURCEMAP=false
-ENV CI=false
-
-# Debug: Check what we have
-RUN ls -la src/ && echo "Checking react-scripts..." && npx react-scripts --version
-
-# Build the application
 RUN npm run build
 
-# Production stage
 FROM nginx:alpine
-
-# Copy built files
 COPY --from=builder /app/build /usr/share/nginx/html
-
-# Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY start-nginx.sh /start-nginx.sh
-
-# Set permissions
-RUN chmod +x /start-nginx.sh && \
-    chmod -R 755 /usr/share/nginx/html
-
+RUN chmod +x /start-nginx.sh && chmod -R 755 /usr/share/nginx/html
 EXPOSE 80
-
 CMD ["/start-nginx.sh"]
