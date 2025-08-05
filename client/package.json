@@ -42,6 +42,14 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "sourcemap-codec": "1.4.8",
+    "rollup-plugin-terser": "7.0.2"
+  },
+  "overrides": {
+    "sourcemap-codec": "1.4.8",
+    "rollup-plugin-terser": "7.0.2"
+  },
   "devDependencies": {
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
