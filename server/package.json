@@ -8,7 +8,8 @@
     "npm": ">=8.0.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node startup.js",
+    "start:direct": "node app.js",
     "dev": "nodemon app.js",
     "test": "jest",
     "lint": "eslint .",
