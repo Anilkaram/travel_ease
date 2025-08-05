@@ -4,8 +4,36 @@ const Tour = require('./models/Tour');
 const Destination = require('./models/Destination');
 require('dotenv').config();
 
+const connectWithRetry = async (retries = 5) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      console.log(`MongoDB connection attempt ${i + 1}/${retries}...`);
+      await mongoose.connect(process.env.MONGO_URI, {
+        serverSelectionTimeoutMS: 10000,
+        socketTimeoutMS: 10000,
+        maxPoolSize: 10,
+        serverSelectionRetryDelayMS: 2000
+      });
+      console.log('MongoDB connected successfully for seeding!');
+      return;
+    } catch (error) {
+      console.log(`MongoDB connection attempt ${i + 1} failed:`, error.message);
+      if (i === retries - 1) {
+        throw error;
+      }
+      console.log(`Retrying in 5 seconds...`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+  }
+};
+
 const seed = async () => {
-  await mongoose.connect(process.env.MONGO_URI);
+  try {
+    await connectWithRetry();
+  } catch (error) {
+    console.error('Failed to connect to MongoDB after retries:', error.message);
+    process.exit(1);
+  }
   
   // Seed Users
   const userCount = await User.countDocuments();
@@ -159,5 +187,9 @@ const seed = async () => {
 
 seed().catch(err => {
   console.error('Seed error:', err);
+  console.error('Full error details:', err.stack);
+  mongoose.disconnect().catch(disconnectErr => {
+    console.error('Error disconnecting from MongoDB:', disconnectErr);
+  });
   process.exit(1);
 });

@@ -11,10 +11,13 @@ RUN npm install
 # Copy all other files
 COPY . .
 
+# Make the startup script executable
+RUN chmod +x start.sh
+
 # Ensure the build includes all necessary files
 RUN ls -la /app/models/ # Verification step
 
 EXPOSE 5000
 
-# Run seed script before starting the server
-CMD ["sh", "-c", "node seed.js && node app.js"]
+# Use the startup script
+CMD ["./start.sh"]
