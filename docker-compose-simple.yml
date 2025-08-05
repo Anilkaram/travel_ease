@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Your existing services
+  # Core services first
   client:
     build: 
       context: ./client
@@ -17,10 +17,7 @@ services:
     volumes:
       - ./client/src:/app/src
     depends_on:
-      server:
-        condition: service_started
-      n8n:
-        condition: service_started
+      - server
     networks:
       - travel-network
 
@@ -35,8 +32,7 @@ services:
       - JWT_SECRET=TravelEase2025SecretKeyForJWTTokens987654321
       - N8N_WEBHOOK_URL=http://n8n:5678/webhook/travelease-chat
     depends_on:
-      mongo:
-        condition: service_healthy
+      - mongo
     networks:
       - travel-network
     volumes:
@@ -54,18 +50,25 @@ services:
       - MONGO_INITDB_DATABASE=travelease
     volumes:
       - mongo-data:/data/db
-      - ./server/seed.js:/docker-entrypoint-initdb.d/seed.js:ro
     networks:
       - travel-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     restart: unless-stopped
 
-  # n8n Automation Platform
+  # Optional services (n8n and postgres)
+  postgres:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=n8n
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=n8n
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - travel-network
+    restart: unless-stopped
+
   n8n:
     image: n8nio/n8n:latest
     ports:
@@ -90,31 +93,9 @@ services:
       - n8n-data:/home/node/.n8n
       - ./chat-agent:/home/node/.n8n/workflows
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     networks:
       - travel-network
-    restart: unless-stopped
-
-  # PostgreSQL for n8n
-  postgres:
-    image: postgres:13
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=n8n
-      - POSTGRES_USER=n8n
-      - POSTGRES_PASSWORD=n8n
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - travel-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U n8n -d n8n"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
     restart: unless-stopped
 
 volumes:
