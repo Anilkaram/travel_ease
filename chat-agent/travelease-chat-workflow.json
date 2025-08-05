@@ -1,0 +1,320 @@
+{
+  "name": "TravelEase Destination Chat Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "travelease-chat",
+        "responseMode": "responseNode",
+        "options": {
+          "noResponseBody": false
+        }
+      },
+      "id": "webhook-chat-001",
+      "name": "Chat Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 300],
+      "webhookId": "travelease-chat-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Initialize chat session\nconst userMessage = $input.first().json.message || '';\nconst sessionId = $input.first().json.sessionId || 'default';\n\n// Clean and normalize the message\nconst cleanMessage = userMessage.toLowerCase().trim();\n\n// Determine if this is a greeting or destination query\nconst isGreeting = cleanMessage === '' || \n                  cleanMessage.includes('hi') || \n                  cleanMessage.includes('hello') || \n                  cleanMessage.includes('start') ||\n                  cleanMessage === 'chat';\n\nconst isDestinationQuery = cleanMessage.includes('destination') ||\n                          cleanMessage.includes('place') ||\n                          cleanMessage.includes('travel') ||\n                          cleanMessage.includes('visit') ||\n                          cleanMessage.includes('tour') ||\n                          cleanMessage.includes('trip');\n\n// Extract potential destination names from common destinations\nconst destinations = ['paris', 'tokyo', 'new york', 'rome', 'bali', 'sydney', 'london', 'dubai', 'barcelona', 'amsterdam'];\nconst mentionedDestination = destinations.find(dest => cleanMessage.includes(dest));\n\nreturn {\n  originalMessage: userMessage,\n  cleanMessage: cleanMessage,\n  sessionId: sessionId,\n  isGreeting: isGreeting,\n  isDestinationQuery: isDestinationQuery,\n  mentionedDestination: mentionedDestination || null\n};"
+      },
+      "id": "message-processor-001",
+      "name": "Message Processor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "greeting-condition",
+              "leftValue": "={{ $json.isGreeting }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "greeting-check-001",
+      "name": "Is Greeting?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "destination-condition",
+              "leftValue": "={{ $json.isDestinationQuery }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal"
+              }
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "destination-check-001",
+      "name": "Is Destination Query?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"response\": \"Hi! What can I do for you? 🌍\\n\\nI can help you with:\\n• Information about travel destinations\\n• Details about popular places to visit\\n• Travel recommendations\\n\\nJust ask me about any destination you're interested in!\",\n  \"type\": \"greeting\",\n  \"sessionId\": \"={{ $json.sessionId }}\"\n}"
+      },
+      "id": "greeting-response-001",
+      "name": "Greeting Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [900, 100]
+    },
+    {
+      "parameters": {
+        "operation": "find",
+        "collection": "destinations",
+        "query": "{\n  \"$or\": [\n    { \"name\": { \"$regex\": \"{{ $json.mentionedDestination || $json.cleanMessage }}\", \"$options\": \"i\" } },\n    { \"location\": { \"$regex\": \"{{ $json.mentionedDestination || $json.cleanMessage }}\", \"$options\": \"i\" } },\n    { \"description\": { \"$regex\": \"{{ $json.mentionedDestination || $json.cleanMessage }}\", \"$options\": \"i\" } }\n  ]\n}",
+        "options": {
+          "sort": "{ \"name\": 1 }",
+          "limit": 5
+        }
+      },
+      "id": "mongodb-query-001",
+      "name": "Query Destinations",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.1,
+      "position": [900, 300],
+      "credentials": {
+        "mongoDb": {
+          "id": "your-mongodb-credential-id",
+          "name": "TravelEase MongoDB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false
+          },
+          "conditions": [
+            {
+              "id": "has-results",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "results-check-001",
+      "name": "Has Results?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format destinations data into a nice response\nconst destinations = $input.all();\nconst userQuery = destinations[0]?.json?.originalMessage || 'destinations';\n\nif (destinations.length === 0) {\n  return {\n    response: \"I couldn't find any destinations matching your query. 😔\\n\\nTry asking about popular destinations like:\\n• Paris, France\\n• Tokyo, Japan\\n• New York, USA\\n• Rome, Italy\\n• Bali, Indonesia\\n• Sydney, Australia\\n\\nWhat destination would you like to know about?\",\n    type: \"no_results\",\n    count: 0\n  };\n}\n\nlet response = `🌍 Here are the destinations I found for you:\\n\\n`;\n\ndestinations.forEach((dest, index) => {\n  const d = dest.json;\n  response += `**${index + 1}. ${d.name}**\\n`;\n  response += `📍 Location: ${d.location}\\n`;\n  response += `ℹ️ Description: ${d.description}\\n`;\n  if (d.image) {\n    response += `🖼️ Image: ${d.image}\\n`;\n  }\n  response += `\\n---\\n\\n`;\n});\n\nresponse += `Found ${destinations.length} destination(s). Would you like to know more about any specific destination?`;\n\nreturn {\n  response: response,\n  type: \"destinations_found\",\n  count: destinations.length,\n  destinations: destinations.map(d => d.json)\n};"
+      },
+      "id": "format-response-001",
+      "name": "Format Destinations Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// No results found response\\nconst originalMessage = $('Message Processor').first().json.originalMessage;\\n\\nreturn {\\n  response: `I couldn't find any destinations matching \\\"${originalMessage}\\\". 😔\\\\n\\\\nTry asking about other popular destinations like:\\\\n• Paris, France 🇫🇷\\\\n• Tokyo, Japan 🇯🇵\\\\n• New York, USA 🇺🇸\\\\n• Rome, Italy 🇮🇹\\\\n• Bali, Indonesia 🇮🇩\\\\n• Sydney, Australia 🇦🇺\\\\n\\\\nWhat destination would you like to explore?`,\\n  type: \\\"no_results\\\",\\n  searchTerm: originalMessage\\n};"
+      },
+      "id": "no-results-response-001",
+      "name": "No Results Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"response\": \"{{ $json.response }}\",\n  \"type\": \"{{ $json.type }}\",\n  \"data\": {{ $json.destinations || '[]' }},\n  \"count\": {{ $json.count || 0 }}\n}"
+      },
+      "id": "destinations-response-001",
+      "name": "Destinations Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1560, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"response\": \"{{ $json.response }}\",\n  \"type\": \"{{ $json.type }}\",\n  \"searchTerm\": \"{{ $json.searchTerm }}\"\n}"
+      },
+      "id": "no-results-webhook-001",
+      "name": "No Results Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1560, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"response\": \"I'm here to help you with travel destinations! 🌍\\n\\nYou can ask me about:\\n• Specific destinations (e.g., 'Tell me about Paris')\\n• General travel information\\n• Popular places to visit\\n\\nWhat would you like to know?\",\n  \"type\": \"general_help\"\n}"
+      },
+      "id": "default-response-001",
+      "name": "Default Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [900, 500]
+    }
+  ],
+  "connections": {
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message Processor": {
+      "main": [
+        [
+          {
+            "node": "Is Greeting?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Is Destination Query?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Greeting?": {
+      "main": [
+        [
+          {
+            "node": "Greeting Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Default Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Destination Query?": {
+      "main": [
+        [
+          {
+            "node": "Query Destinations",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Default Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Destinations": {
+      "main": [
+        [
+          {
+            "node": "Has Results?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Results?": {
+      "main": [
+        [
+          {
+            "node": "Format Destinations Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Results Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Destinations Response": {
+      "main": [
+        [
+          {
+            "node": "Destinations Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Results Response": {
+      "main": [
+        [
+          {
+            "node": "No Results Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-01-05T00:00:00.000Z",
+  "versionId": "1"
+}

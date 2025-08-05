@@ -8,6 +8,7 @@ import PerformanceMonitor from './components/PerformanceMonitor';
 import ImageDebugger from './components/ImageDebugger';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ChatWidget from './components/ChatWidget';
 import './styles/main.css';
 
 // Lazy load components for better performance
@@ -42,6 +43,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
+          <ChatWidget />
           <ImageDebugger />
           <PerformanceMonitor />
         </div>
