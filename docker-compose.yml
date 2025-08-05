@@ -39,6 +39,7 @@ services:
     volumes:
       - ./server:/app
       - /app/node_modules
+      - /app/package-lock.json
 
   mongo:
     image: mongo:5.0
