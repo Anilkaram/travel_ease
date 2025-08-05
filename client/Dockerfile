@@ -46,8 +46,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies with optimized flags
-RUN npm ci --only=production --silent --no-audit --no-fund || \
-    npm install --legacy-peer-deps --silent --no-audit --no-fund
+RUN npm install --legacy-peer-deps --silent --no-audit --no-fund
 
 # Copy source code
 COPY . .
@@ -55,8 +54,11 @@ COPY . .
 # Set memory limit for Node.js build process
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Build the application
-RUN npm run build
+# Debug: Check if react-scripts is available
+RUN ls -la node_modules/.bin/ | grep react-scripts || echo "react-scripts not found"
+
+# Build the application with verbose output
+RUN npm run build -- --verbose
 
 # Production stage
 FROM nginx:alpine
