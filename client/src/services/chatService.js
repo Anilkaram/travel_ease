@@ -7,6 +7,10 @@ class ChatService {
     this.isN8nConnected = false;
     this.lastConnectionCheck = 0;
     this.connectionCheckInterval = 30000; // 30 seconds
+    
+    console.log('ChatService initialized with:');
+    console.log('API URL:', this.apiUrl);
+    console.log('n8n Webhook URL:', this.n8nWebhookUrl);
   }
 
   // Check if we should retry connection

@@ -12,11 +12,13 @@ services:
     environment:
       - NODE_ENV=development
       - REACT_APP_API_URL=http://server:5000
+      - REACT_APP_N8N_WEBHOOK_URL=http://n8n:5678/webhook/chat
       - API_BACKEND=server:5000  # For nginx proxy configuration
     volumes:
       - ./client/src:/app/src
     depends_on:
       - server
+      - n8n
     networks:
       - travel-network
 
@@ -51,8 +53,35 @@ services:
     networks:
       - travel-network
 
+  n8n:
+    image: n8nio/n8n:latest
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_SECURE_COOKIE=false
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n:5678
+      - GENERIC_TIMEZONE=UTC
+      - N8N_DIAGNOSTICS_ENABLED=false
+    volumes:
+      - n8n-data:/home/node/.n8n
+      - ./workflow.json:/tmp/workflow.json
+    networks:
+      - travel-network
+    depends_on:
+      - mongo
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5678/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   mongo-data:
+  n8n-data:
 
 networks:
   travel-network:

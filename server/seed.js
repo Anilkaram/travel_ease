@@ -9,10 +9,11 @@ const connectWithRetry = async (retries = 5) => {
     try {
       console.log(`MongoDB connection attempt ${i + 1}/${retries}...`);
       await mongoose.connect(process.env.MONGO_URI, {
-        serverSelectionTimeoutMS: 10000,
-        socketTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 15000,
+        socketTimeoutMS: 15000,
         maxPoolSize: 10,
-        serverSelectionRetryDelayMS: 2000
+        serverSelectionRetryDelayMS: 3000,
+        authSource: 'admin'  // Add authentication source
       });
       console.log('MongoDB connected successfully for seeding!');
       return;
