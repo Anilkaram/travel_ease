@@ -8,7 +8,7 @@
   align-items: center;
   font-size: 0.9rem; /* Reduced from 1rem */
   position: fixed;
-  top: 8px; /* Added spacing from top */
+  top: 12px; /* Increased spacing from top */
   left: 0;
   right: 0;
   z-index: 1000;
