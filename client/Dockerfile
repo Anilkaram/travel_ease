@@ -36,29 +36,28 @@
 
 FROM node:18-alpine as builder
 
-# Install build dependencies
+# Install build dependencies for native modules
 RUN apk add --no-cache python3 make g++
 
 # Set working directory
 WORKDIR /app
 
+# Set environment variables for build optimization
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV GENERATE_SOURCEMAP=false
+ENV CI=false
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies with optimized flags
-RUN npm install --legacy-peer-deps --silent --no-audit --no-fund
+# Clean install with proper flags
+RUN npm ci --legacy-peer-deps --no-audit --no-fund
 
 # Copy source code
 COPY . .
 
-# Set memory limit for Node.js build process
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-
-# Debug: Check if react-scripts is available
-RUN ls -la node_modules/.bin/ | grep react-scripts || echo "react-scripts not found"
-
-# Build the application with verbose output
-RUN npm run build -- --verbose
+# Build the application
+RUN npm run build
 
 # Production stage
 FROM nginx:alpine
