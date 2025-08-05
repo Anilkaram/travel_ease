@@ -5,6 +5,43 @@ class ChatService {
     this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/chat';
     this.isConnected = false;
     this.isN8nConnected = false;
+    this.lastConnectionCheck = 0;
+    this.connectionCheckInterval = 30000; // 30 seconds
+  }
+
+  // Check if we should retry connection
+  shouldRetryConnection() {
+    const now = Date.now();
+    return now - this.lastConnectionCheck > this.connectionCheckInterval;
+  }
+
+  // Retry n8n connection if needed
+  async retryN8nConnection() {
+    if (!this.isN8nConnected && this.shouldRetryConnection()) {
+      console.log('Retrying n8n connection...');
+      this.lastConnectionCheck = Date.now();
+      
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch(this.n8nWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'reconnection test' }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        this.isN8nConnected = response.ok;
+        
+        if (this.isN8nConnected) {
+          console.log('n8n connection restored!');
+        }
+      } catch (error) {
+        console.log('n8n still unavailable:', error.message);
+      }
+    }
   }
 
   // Initialize chat service
@@ -12,16 +49,23 @@ class ChatService {
     try {
       // Check if n8n webhook is available first (preferred)
       try {
+        // Create AbortController for timeout (browser-compatible)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
         const n8nResponse = await fetch(this.n8nWebhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: 'test connection' }),
-          timeout: 3000
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
         this.isN8nConnected = n8nResponse.ok;
         console.log('Chat service: n8n webhook connected');
       } catch (n8nError) {
-        console.log('Chat service: n8n webhook not available, checking backend...');
+        this.isN8nConnected = false;
+        console.log('Chat service: n8n webhook not available, checking backend...', n8nError.message);
       }
 
       // Check if backend is available
@@ -40,9 +84,18 @@ class ChatService {
 
   // Send message to AI service or backend
   async sendMessage(message, context = {}) {
+    console.log(`Sending message: "${message}" to n8n webhook`);
+    
+    // Try to reconnect if needed
+    await this.retryN8nConnection();
+    
     // Priority 1: Try n8n webhook first (most advanced)
     if (this.isN8nConnected) {
       try {
+        // Create timeout controller
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s for message processing
+
         const response = await fetch(this.n8nWebhookUrl, {
           method: 'POST',
           headers: {
@@ -53,16 +106,40 @@ class ChatService {
             sessionId: context.sessionId || Date.now().toString(),
             userId: context.userId || 'anonymous',
             timestamp: new Date().toISOString()
-          })
+          }),
+          signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
-          return data.message || data.response || 'I received your message!';
+          console.log('n8n response received:', data);
+          
+          // Handle different response formats from n8n
+          let responseText = '';
+          if (data.message) {
+            responseText = data.message;
+          } else if (data.response) {
+            responseText = data.response;
+          } else if (typeof data === 'string') {
+            responseText = data;
+          } else if (data.success && data.message) {
+            responseText = data.message;
+          } else {
+            responseText = 'I received your message!';
+          }
+          
+          console.log('Processed response:', responseText);
+          return responseText;
+        } else {
+          console.error('n8n webhook error - HTTP status:', response.status);
+          throw new Error(`HTTP ${response.status}`);
         }
       } catch (error) {
         console.error('n8n webhook error:', error);
-        this.isN8nConnected = false;
+        this.isN8nConnected = false; // Mark as disconnected on error
+        console.log('Falling back to backend API...');
       }
     }
 
