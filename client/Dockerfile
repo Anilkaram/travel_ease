@@ -50,8 +50,8 @@ ENV CI=false
 # Copy package files
 COPY package*.json ./
 
-# Clean install with proper flags
-RUN npm ci --legacy-peer-deps --no-audit --no-fund
+# Install dependencies with proper flags
+RUN npm install --legacy-peer-deps --no-audit --no-fund --prefer-offline
 
 # Copy source code
 COPY . .
