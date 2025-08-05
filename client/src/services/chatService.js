@@ -2,7 +2,7 @@
 class ChatService {
   constructor() {
     this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/travelease-chat';
+    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook-test/chat';
     this.isConnected = false;
     this.isN8nConnected = false;
   }
