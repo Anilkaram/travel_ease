@@ -46,7 +46,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 60px; /* Reduced from 80px to match smaller navbar */
+  padding-top: 68px; /* Adjusted for navbar (60px height + 8px top spacing) */
 }
 
 .container {
