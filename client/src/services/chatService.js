@@ -2,26 +2,69 @@
 class ChatService {
   constructor() {
     this.apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/travelease-chat';
     this.isConnected = false;
+    this.isN8nConnected = false;
   }
 
   // Initialize chat service
   async initialize() {
     try {
+      // Check if n8n webhook is available first (preferred)
+      try {
+        const n8nResponse = await fetch(this.n8nWebhookUrl.replace('/webhook/', '/webhook-test/'), {
+          method: 'GET',
+          timeout: 3000
+        });
+        this.isN8nConnected = true;
+        console.log('Chat service: n8n webhook connected');
+      } catch (n8nError) {
+        console.log('Chat service: n8n webhook not available, checking backend...');
+      }
+
       // Check if backend is available
       const response = await fetch(`${this.apiUrl}/health`);
       this.isConnected = response.ok;
-      return this.isConnected;
+      
+      console.log(`Chat service: Backend ${this.isConnected ? 'connected' : 'offline'}`);
+      return this.isConnected || this.isN8nConnected;
     } catch (error) {
       console.log('Chat service: Using offline mode');
       this.isConnected = false;
+      this.isN8nConnected = false;
       return false;
     }
   }
 
   // Send message to AI service or backend
   async sendMessage(message, context = {}) {
-    // If connected to backend, use real API
+    // Priority 1: Try n8n webhook first (most advanced)
+    if (this.isN8nConnected) {
+      try {
+        const response = await fetch(this.n8nWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message,
+            sessionId: context.sessionId || Date.now().toString(),
+            userId: context.userId || 'anonymous',
+            timestamp: new Date().toISOString()
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return data.message || data.response || 'I received your message!';
+        }
+      } catch (error) {
+        console.error('n8n webhook error:', error);
+        this.isN8nConnected = false;
+      }
+    }
+
+    // Priority 2: Try backend API
     if (this.isConnected) {
       try {
         const response = await fetch(`${this.apiUrl}/chat`, {
@@ -45,7 +88,7 @@ class ChatService {
       }
     }
 
-    // Fallback to local response generation
+    // Priority 3: Fallback to local response generation
     return this.generateLocalResponse(message);
   }
 
