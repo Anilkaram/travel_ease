@@ -59,14 +59,11 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_SECURE_COOKIE=false
-      - N8N_BASIC_AUTH_ACTIVE=false
-      - N8N_HOST=0.0.0.0
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - WEBHOOK_URL=http://n8n:5678
-      - GENERIC_TIMEZONE=UTC
-      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_WEBHOOK_URL="http://13.220.158.241:5678/webhook/chat" \
+      - NODE_ENV=development \
+      - PORT=5000 \
+      - N8N_SECURE_COOKIE=false \
+      - MONGO_URI="mongodb://admin:admin@mongo:27017/travelease?authSource=admin" \
     volumes:
       - n8n-data:/home/node/.n8n
       - ./workflow.json:/tmp/workflow.json
