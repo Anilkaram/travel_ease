@@ -14,7 +14,9 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  padding: 150px 0 100px;
+  padding: 100px 0 100px; /* Adjusted bottom padding */
+  margin-top: -60px; /* Pull up to cover navbar area */
+  padding-top: 150px; /* Add padding to push content below navbar */
   position: relative;
   overflow: hidden;
 }
