@@ -51,7 +51,7 @@ class ChatService {
   // Initialize chat service
   async initialize() {
     try {
-      // Check if n8n webhook is available first (preferred)
+      console.log('Initializing chat service...');
       try {
         // Create AbortController for timeout (browser-compatible)
         const controller = new AbortController();
@@ -73,10 +73,38 @@ class ChatService {
       }
 
       // Check if backend is available
-      const response = await fetch(`${this.apiUrl}/health`);
-      this.isConnected = response.ok;
+      const healthEndpoint = this.apiUrl.endsWith('/api') ? 
+        this.apiUrl.replace('/api', '/health') : 
+        `${this.apiUrl}/health`;
+        
+      console.log('Checking backend health at:', healthEndpoint);
+      const response = await fetch(healthEndpoint, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
       
+      this.isConnected = response.ok;
       console.log(`Chat service: Backend ${this.isConnected ? 'connected' : 'offline'}`);
+      
+      // Try n8n connection
+      try {
+        const n8nResponse = await fetch(this.n8nWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: 'initialization test' })
+        });
+        
+        this.isN8nConnected = n8nResponse.ok;
+        console.log(`Chat service: n8n ${this.isN8nConnected ? 'connected' : 'offline'}`);
+      } catch (n8nError) {
+        console.log('Chat service: n8n connection failed:', n8nError.message);
+        this.isN8nConnected = false;
+      }
+      
       return this.isConnected || this.isN8nConnected;
     } catch (error) {
       console.log('Chat service: Using offline mode');
