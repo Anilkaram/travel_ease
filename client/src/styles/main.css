@@ -1,3 +1,29 @@
+/* Hide scrollbars by default, show on hover */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+
+/* Hide scrollbar for Chrome, Edge, Safari */
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+  transition: width 0.2s;
+}
+
+body:hover::-webkit-scrollbar {
+  width: 8px;
+  background: #f1f1f1;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+body:hover::-webkit-scrollbar-thumb {
+  background: #555;
+}
 /* Import performance optimizations */
 @import './performance.css';
 
