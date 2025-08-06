@@ -31,21 +31,37 @@ class ChatService {
 
         const response = await fetch(this.n8nWebhookUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'reconnection test' }),
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          mode: 'cors',
+          body: JSON.stringify({ 
+            message: 'reconnection test',
+            timestamp: new Date().toISOString()
+          }),
           signal: controller.signal
         });
 
         clearTimeout(timeoutId);
-        this.isN8nConnected = response.ok;
         
-        if (this.isN8nConnected) {
-          console.log('n8n connection restored!');
+        if (response.ok) {
+          const data = await response.json();
+          this.isN8nConnected = true;
+          console.log('n8n connection restored!', data);
+        } else {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
       } catch (error) {
-        console.log('n8n still unavailable:', error.message);
+        this.isN8nConnected = false;
+        console.error('n8n connection failed:', {
+          url: this.n8nWebhookUrl,
+          error: error.message,
+          timestamp: new Date().toISOString()
+        });
       }
     }
+    return this.isN8nConnected;
   }
 
   // Initialize chat service
