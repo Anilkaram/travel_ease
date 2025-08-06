@@ -1,22 +1,82 @@
 {
+  "name": "Travel Chat Test Workflow",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
         "path": "chat",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {
+          "rawBody": true,
+          "responseCode": 200,
+          "responseData": "allEntries",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        }
       },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -144,
-        384
-      ],
-      "id": "3c3d417a-2b0a-4a3e-8c1c-021cd42c23f6",
+      "id": "webhook-node",
       "name": "Webhook",
-      "webhookId": "b68841dd-63e4-4b54-ba05-de3f360fc5b1"
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "chat-test-webhook"
     },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Get the incoming message and create test response\nconst incomingMessage = $input.item.json.message || 'No message received';\n\nreturn {\n    status: 'success',\n    message: `n8n test connection successful! Received: \"${incomingMessage}\"`,\n    timestamp: new Date().toISOString(),\n    connection: 'active',\n    responseType: 'test'\n};"
+      },
+      "id": "process-node",
+      "name": "Process Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {},
+      "id": "response-node",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Process Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null,
+  "tags": ["test", "chat"],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-06T00:00:00.000Z",
+  "versionId": "1",
     {
       "parameters": {
         "mode": "runOnceForEachItem",
