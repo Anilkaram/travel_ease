@@ -37,43 +37,25 @@ async function waitForMongoDB() {
 // Function to run database seeding
 async function runSeed() {
   try {
-    console.log('Running database seed...');
+    console.log('🌱 Running database seed...');
     
-    // Run seed script as a separate process to avoid conflicts
-    const { spawn } = require('child_process');
+    // Import and run seeding function directly
+    const seedFunction = require('./seedData');
+    await seedFunction();
     
-    return new Promise((resolve, reject) => {
-      const seedProcess = spawn('node', ['seed.js'], {
-        env: process.env,
-        stdio: 'inherit'
-      });
-      
-      seedProcess.on('close', (code) => {
-        if (code === 0) {
-          console.log('✅ Database seeding completed successfully!');
-          resolve();
-        } else {
-          console.log('⚠️ Database seeding failed, but continuing with app startup...');
-          resolve(); // Continue even if seeding fails
-        }
-      });
-      
-      seedProcess.on('error', (error) => {
-        console.log('⚠️ Database seeding failed, but continuing with app startup...');
-        console.log('Seed error:', error.message);
-        resolve(); // Continue even if seeding fails
-      });
-    });
+    console.log('✅ Database seeding completed successfully!');
     
   } catch (error) {
-    console.log('⚠️ Database seeding failed, but continuing with app startup...');
-    console.log('Seed error:', error.message);
+    console.error('❌ Database seeding failed:', error.message);
+    throw error;
   }
 }
 
 // Main startup function
 async function startServer() {
   try {
+    console.log('🚀 Starting TravelEase Server...');
+    
     // Wait for MongoDB to be ready
     await waitForMongoDB();
     
@@ -81,11 +63,12 @@ async function startServer() {
     await runSeed();
     
     // Start the main application
-    console.log('🚀 Starting server...');
+    console.log('🌟 Starting main server application...');
     require('./app.js');
     
   } catch (error) {
     console.error('❌ Server startup failed:', error.message);
+    console.error('Full error stack:', error.stack);
     process.exit(1);
   }
 }

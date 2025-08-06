@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const tourRoutes = require('./routes/tourRoutes');
 const authRoutes = require('./routes/authRoutes');
 const destinationRoutes = require('./routes/destinationRoutes');
 const searchRoutes = require('./routes/searchRoutes');
@@ -40,7 +39,6 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-app.use('/api/tours', tourRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/destinations', destinationRoutes);
 app.use('/api/search', searchRoutes);
