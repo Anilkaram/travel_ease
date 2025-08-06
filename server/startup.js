@@ -5,30 +5,37 @@ async function waitForMongoDB() {
   const maxAttempts = 30;
   const delayMs = 5000;
   
-  console.log('Waiting for MongoDB to be ready...');
+  console.log('🔍 Waiting for MongoDB to be ready...');
+  console.log('🔗 MONGO_URI:', process.env.MONGO_URI ? 'SET' : 'NOT SET');
   
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      console.log(`Attempt ${attempt}: Checking MongoDB connection...`);
+      console.log(`🔄 Attempt ${attempt}/${maxAttempts}: Checking MongoDB connection...`);
       
       await mongoose.connect(process.env.MONGO_URI, {
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 5000,
+        serverSelectionTimeoutMS: 15000,
+        socketTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
+        authSource: 'admin',
+        maxPoolSize: 10,
+        retryWrites: true,
+        retryReads: true
       });
       
       console.log('✅ MongoDB connection successful!');
-      await mongoose.disconnect();
+      console.log(`🔗 Connection state: ${mongoose.connection.readyState}`);
       return true;
       
     } catch (error) {
-      console.log(`❌ MongoDB connection failed: ${error.message}`);
+      console.log(`❌ MongoDB connection attempt ${attempt} failed:`, error.message);
       
       if (attempt === maxAttempts) {
-        console.error('Failed to connect to MongoDB after maximum attempts');
+        console.error('💥 Failed to connect to MongoDB after maximum attempts');
+        console.error('🔍 Final error details:', error);
         process.exit(1);
       }
       
-      console.log(`Waiting ${delayMs/1000} seconds before next attempt...`);
+      console.log(`⏳ Waiting ${delayMs/1000} seconds before next attempt...`);
       await new Promise(resolve => setTimeout(resolve, delayMs));
     }
   }

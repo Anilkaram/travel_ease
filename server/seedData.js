@@ -105,8 +105,33 @@ const destinations = [
 async function seedDestinations() {
   try {
     console.log('🌱 Starting destination seeding process...');
+    console.log('🔍 Current mongoose connection state:', mongoose.connection.readyState);
+    console.log('🔗 MONGO_URI available:', process.env.MONGO_URI ? 'YES' : 'NO');
+    
+    // Connection states: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    if (mongoose.connection.readyState !== 1) {
+      console.log('🔌 MongoDB not connected, establishing connection...');
+      await mongoose.connect(process.env.MONGO_URI, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 30000,
+        connectTimeoutMS: 30000,
+        maxPoolSize: 10,
+        authSource: 'admin',
+        retryWrites: true,
+        retryReads: true
+      });
+      console.log('✅ MongoDB connected for seeding!');
+    } else {
+      console.log('✅ Using existing MongoDB connection for seeding');
+    }
+    
+    // Test connection with a simple operation
+    console.log('🧪 Testing database connection...');
+    await mongoose.connection.db.admin().ping();
+    console.log('✅ Database ping successful!');
     
     // Check if destinations already exist
+    console.log('📊 Checking existing destinations...');
     const existingCount = await Destination.countDocuments();
     console.log(`📊 Found ${existingCount} existing destinations`);
     
