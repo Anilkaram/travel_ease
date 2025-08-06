@@ -1,12 +1,13 @@
 .hero-section {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   color: white;
   position: relative;
   overflow: hidden;
-  margin-top: -60px; /* Updated to match smaller navbar height */
-  padding-top: 60px; /* Updated to match smaller navbar height */
+  margin-top: -60px;
+  padding-top: 60px;
+  background-color: rgba(0, 0, 0, 0.3); /* Adding a slight overlay */
 }
 
 .hero-background {
@@ -18,10 +19,23 @@
   opacity: 0;
   transition: opacity 1.5s ease-in-out;
   z-index: 1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-fit: cover;
 }
 
 .hero-background.active {
   opacity: 1;
+}
+
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .hero-content {
