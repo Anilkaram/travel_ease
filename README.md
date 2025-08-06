@@ -36,3 +36,10 @@ Database: MongoDB v5.0
 ODM: Mongoose v7.4.3
 Authentication: Username/Password (admin/admin)
 Database Name: travelease
+
+# Application image with chat agent
+<img width="1920" height="1080" alt="Screenshot (310)" src="https://github.com/user-attachments/assets/2c958b17-99fa-47e4-9971-5f99d99c8ffb" />
+
+# N8N workflow for test
+<img width="1920" height="1080" alt="Screenshot (309)" src="https://github.com/user-attachments/assets/81e17e40-1784-41e6-b7a8-22f596da9967" />
+
