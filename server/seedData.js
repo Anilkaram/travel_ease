@@ -30,7 +30,7 @@ const destinations = [
   {
     name: 'Dubai',
     location: 'United Arab Emirates',
-    description: 'A futuristic city with luxury shopping, ultramodern architecture, and lively nightlife.',
+    description: 'A futuristic city with luxury shopping and ultramodern architecture.',
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=80'
   },
   {
