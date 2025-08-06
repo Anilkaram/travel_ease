@@ -26,17 +26,15 @@ const HeroSection = () => {
     <section className="hero-section">
       {/* Background images */}
       {backgroundImages.map((image, index) => (
-        <img
+        <div
           key={index}
-          src={image}
-          alt={`Background ${index + 1}`}
           className={`hero-background ${index === currentImageIndex ? 'active' : ''}`}
           style={{
-            background: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${image}) no-repeat center center/cover`
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${image})`
           }}
         />
       ))}
-      
+
       {/* Content */}
       <div className="hero-content">
         <h1>Discover Amazing Places Around The World</h1>
