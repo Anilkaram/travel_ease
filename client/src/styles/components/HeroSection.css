@@ -1,19 +1,22 @@
+
 .hero-section {
+  height: 100vh;
   min-height: 100vh;
   display: flex;
   align-items: center;
   color: white;
   position: relative;
   overflow: hidden;
-  margin-top: -60px;
-  padding-top: 60px;
   background-color: rgba(0, 0, 0, 0.3); /* Adding a slight overlay */
 }
+
 
 .hero-background {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -22,7 +25,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  object-fit: cover;
 }
 
 .hero-background.active {
