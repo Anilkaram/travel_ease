@@ -68,7 +68,6 @@ services:
       - N8N_DIAGNOSTICS_ENABLED=false
     volumes:
       - n8n-data:/home/node/.n8n
-      - ./test-workflow.json:/tmp/workflow.json
     networks:
       - travel-network
     depends_on:
