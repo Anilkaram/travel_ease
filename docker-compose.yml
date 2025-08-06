@@ -11,7 +11,6 @@ services:
       - "80:80"
     environment:
       - NODE_ENV=development
-      - API_BACKEND=server:5000  # For nginx proxy configuration
     volumes:
       - ./client/src:/app/src
     depends_on:

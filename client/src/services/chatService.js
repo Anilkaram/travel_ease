@@ -1,7 +1,8 @@
 // Chat service for handling API communications with n8n
 class ChatService {
   constructor() {
-    this.n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/test-chat';
+    // Direct browser-to-n8n communication URL - use window.location.hostname to work in all environments
+    this.n8nWebhookUrl = `http://${window.location.hostname}:5678/webhook/test-chat`;
     this.isN8nConnected = false;
     console.log('ChatService initialized with n8n URL:', this.n8nWebhookUrl);
   }
