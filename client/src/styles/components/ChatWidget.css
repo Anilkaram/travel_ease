@@ -1,9 +1,9 @@
 /* Remove default focus outline and add custom style for chat input */
 .chat-input:focus,
 .chat-widget input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #a5b4fc;
-  border: 1px solid #6366f1;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 /* Chat Widget Styles */
 .chat-widget {
