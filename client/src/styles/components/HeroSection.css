@@ -1,3 +1,10 @@
+/* Remove default focus outline and add custom style for search bar */
+.search-box input:focus,
+.search-box select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #a5b4fc;
+  border: 1px solid #6366f1;
+}
 
 .hero-section {
   height: 100vh;
