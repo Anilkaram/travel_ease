@@ -19,7 +19,9 @@ const allDestinations = [
   { name: 'Seoul', location: 'South Korea', description: 'A city where modern skyscrapers, high-tech subways and pop culture meet Buddhist temples.', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&q=80' },
   { name: 'Orlando', location: 'USA', description: 'Home to more than a dozen theme parks, including Walt Disney World and Universal Studios.', image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&q=80' },
   { name: 'Washington D.C.', location: 'USA', description: 'The U.S. capital, filled with iconic monuments and museums.', image: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=400&q=80' },
-  { name: 'Los Angeles', location: 'USA', description: 'Known for its Mediterranean climate, ethnic diversity, Hollywood, and the entertainment industry.', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80' }
+  { name: 'Los Angeles', location: 'USA', description: 'Known for its Mediterranean climate, ethnic diversity, Hollywood, and the entertainment industry.', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&q=80' },
+  { name: 'Osaka', location: 'Japan', description: 'A vibrant Japanese city famous for its food culture, historic castles, and modern attractions.', image: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=400&q=80' },
+  { name: 'Vienna', location: 'Austria', description: 'The elegant capital known for its imperial architecture, classical music heritage, and coffee culture.', image: 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=400&q=80' }
 ];
 
 function getRandomDestinations(arr, n) {
@@ -30,7 +32,7 @@ function getRandomDestinations(arr, n) {
 const PopularDestinations = () => {
   const [popular, setPopular] = useState([]);
   useEffect(() => {
-    setPopular(getRandomDestinations(allDestinations, 6));
+    setPopular(getRandomDestinations(allDestinations, 8));
   }, []);
 
   return (

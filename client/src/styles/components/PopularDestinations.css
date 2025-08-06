@@ -274,10 +274,24 @@
 }
 
 /* Responsive Design */
+@media (min-width: 1600px) {
+  .destinations-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+}
+
 @media (max-width: 1200px) {
   .destinations-grid {
     grid-template-columns: repeat(3, 1fr); /* Changed from repeat(2, 1fr) to show more cards */
     gap: 20px; /* Reduced from 30px */
+  }
+}
+
+@media (max-width: 992px) {
+  .destinations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
   }
 }
 
