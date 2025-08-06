@@ -49,42 +49,42 @@ const seed = async () => {
   const destinations = [
     {
       name: 'Bali',
-      country: 'Indonesia',
+      location: 'Indonesia',
       description: 'A tropical paradise with beautiful beaches, vibrant culture, and lush landscapes.',
       image: '/assets/images/bali.jpg',
       featured: true
     },
     {
       name: 'Paris',
-      country: 'France',
+      location: 'France',
       description: 'The city of lights, romance, and world-famous cuisine and art.',
       image: '/assets/images/paris.jpg',
       featured: true
     },
     {
       name: 'Rome',
-      country: 'Italy',
+      location: 'Italy',
       description: 'A city rich in history, architecture, and delicious Italian food.',
       image: '/assets/images/rome.jpg',
       featured: true
     },
     {
       name: 'Sydney',
-      country: 'Australia',
+      location: 'Australia',
       description: 'Famous for its Opera House, Harbour Bridge, and beautiful beaches.',
       image: '/assets/images/sydney.jpg',
       featured: true
     },
     {
       name: 'Tokyo',
-      country: 'Japan',
+      location: 'Japan',
       description: 'A blend of modern skyscrapers, historic temples, and cherry blossoms.',
       image: '/assets/images/tokyo.jpg',
       featured: false
     },
     {
       name: 'New York',
-      country: 'USA',
+      location: 'USA',
       description: 'The city that never sleeps, with iconic landmarks and diverse culture.',
       image: '/assets/images/new-york.jpg',
       featured: false
