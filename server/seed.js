@@ -75,7 +75,7 @@ const seed = async () => {
     {
       name: 'Dubai',
       location: 'United Arab Emirates',
-      description: 'A futuristic city with luxury shopping and ultramodern architecture.',
+      description: 'A futuristic city with luxury shopping and modern architecture.',
       image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=80'
     },
     {
@@ -106,7 +106,7 @@ const seed = async () => {
       name: 'Istanbul',
       location: 'Turkey',
       description: 'A city straddling Europe and Asia across the Bosphorus Strait.',
-      image: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=400&q=80'
+      image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400&q=80'
     },
     {
       name: 'Kuala Lumpur',
