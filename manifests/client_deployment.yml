@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: anildoc143/travel_ease_website_v5:client
+        image: anildoc143/travel_ease_website_v6:client
         ports:
         - containerPort: 80
         env:
@@ -31,11 +31,11 @@ spec:
           value: "server-service:80"  # Kubernetes service name and port
         resources:
           requests:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 100m
+            memory: 128Mi
           limits:
-            cpu: 400m
-            memory: 500Mi
+            cpu: 250m
+            memory: 256Mi
         readinessProbe:
           httpGet:
             path: /
