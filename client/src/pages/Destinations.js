@@ -1,5 +1,4 @@
 import React from 'react';
-import { images } from '../utils/images';
 import '../styles/pages/Destinations.css';
 
 const destinations = [

@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import SearchBar from './SearchBar';
 import SmartImage from './SmartImage';
 import '../styles/components/Navbar.css';
-import { images } from '../utils/images';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

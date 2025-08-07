@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/components/HeroSection.css';
-import { images } from '../utils/images';
 
 const HeroSection = () => {
   const backgroundImages = [

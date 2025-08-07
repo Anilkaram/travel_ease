@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import OptimizedImage from './OptimizedImage';
 import '../styles/components/PopularDestinations.css';
 // The new destinations list (should be fetched from backend in production)
@@ -25,7 +24,12 @@ const allDestinations = [
 ];
 
 function getRandomDestinations(arr, n) {
-  const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+  // Fisher-Yates shuffle algorithm for proper randomization
+  const shuffled = arr.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   return shuffled.slice(0, n);
 }
 
