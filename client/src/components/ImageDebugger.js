@@ -50,8 +50,8 @@ const ImageDebugger = () => {
       zIndex: 9999
     }}>
       <h4>Image Debug Info:</h4>
-      {imageTests.map((test, index) => (
-        <div key={index} style={{ marginBottom: '5px' }}>
+      {imageTests.map((test) => (
+        <div key={test.path} style={{ marginBottom: '5px' }}>
           <strong>{test.path}</strong>: 
           <span style={{ color: test.status === 'success' ? 'lightgreen' : 'lightcoral' }}>
             {test.status}

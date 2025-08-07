@@ -98,6 +98,44 @@ const SearchBar = () => {
     }
   };
 
+  const renderSuggestionContent = () => {
+    if (isLoading) {
+      return (
+        <div className="suggestion-item loading">
+          <i className="fas fa-spinner fa-spin"></i>
+          <span>Searching...</span>
+        </div>
+      );
+    }
+
+    if (suggestions.length > 0) {
+      return suggestions.map((suggestion) => (
+        <div
+          key={suggestion.value}
+          className="suggestion-item"
+          onClick={() => handleSuggestionClick(suggestion)}
+        >
+          <div className="suggestion-content">
+            <i className={`fas ${getSuggestionIcon(suggestion.type)}`}></i>
+            <span className="suggestion-text">{suggestion.value}</span>
+            <span className="suggestion-category">{suggestion.category}</span>
+          </div>
+        </div>
+      ));
+    }
+
+    if (searchQuery.length >= 2) {
+      return (
+        <div className="suggestion-item no-results">
+          <i className="fas fa-exclamation-circle"></i>
+          <span>No suggestions found</span>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className="search-bar-container" ref={searchRef}>
       <div className="search-input-wrapper">
@@ -121,31 +159,7 @@ const SearchBar = () => {
 
       {showSuggestions && (
         <div className="suggestions-dropdown">
-          {isLoading ? (
-            <div className="suggestion-item loading">
-              <i className="fas fa-spinner fa-spin"></i>
-              <span>Searching...</span>
-            </div>
-          ) : suggestions.length > 0 ? (
-            suggestions.map((suggestion) => (
-              <div
-                key={suggestion.value}
-                className="suggestion-item"
-                onClick={() => handleSuggestionClick(suggestion)}
-              >
-                <div className="suggestion-content">
-                  <i className={`fas ${getSuggestionIcon(suggestion.type)}`}></i>
-                  <span className="suggestion-text">{suggestion.value}</span>
-                  <span className="suggestion-category">{suggestion.category}</span>
-                </div>
-              </div>
-            ))
-          ) : searchQuery.length >= 2 ? (
-            <div className="suggestion-item no-results">
-              <i className="fas fa-exclamation-circle"></i>
-              <span>No suggestions found</span>
-            </div>
-          ) : null}
+          {renderSuggestionContent()}
         </div>
       )}
     </div>

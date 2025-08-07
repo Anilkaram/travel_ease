@@ -164,9 +164,9 @@ const SearchResults = () => {
           <section className="suggestions-section">
             <h3>You might also be interested in:</h3>
             <div className="suggestions-grid">
-              {searchResults.suggestions.map((suggestion, index) => (
+              {searchResults.suggestions.map((suggestion) => (
                 <Link 
-                  key={index}
+                  key={`${suggestion.value}-${suggestion.type}`}
                   to={`/search?q=${encodeURIComponent(suggestion.value)}`}
                   className="suggestion-link"
                 >
