@@ -36,11 +36,11 @@ spec:
           mountPath: /data/db
         resources:
           requests:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 100m
+            memory: 154Mi
           limits:
-            cpu: 400m
-            memory: 512Mi
+            cpu: 256m
+            memory: 256Mi
   volumeClaimTemplates:
   - metadata:
       name: mongo-storage
