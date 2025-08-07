@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import TourCard from '../components/TourCard';
+// import TourCard from '../components/TourCard';
 import OptimizedImage from '../components/OptimizedImage';
 import { apiConfig } from '../config/api';
 import { images } from '../utils/images';
@@ -9,7 +9,6 @@ import '../styles/pages/SearchResults.css';
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState({
-    tours: [],
     destinations: [],
     suggestions: []
   });
@@ -53,7 +52,11 @@ const SearchResults = () => {
         const data = await response.json();
         
         if (data.status === 'success') {
-          setSearchResults(data.data);
+          // Only keep destinations
+          setSearchResults({
+            destinations: data.data.destinations || [],
+            suggestions: data.data.suggestions || []
+          });
         } else {
           setError('Failed to fetch search results');
         }
@@ -68,22 +71,8 @@ const SearchResults = () => {
     fetchSearchResults();
   }, [query]);
 
-  const getTotalResults = () => {
-    return searchResults.tours.length + searchResults.destinations.length;
-  };
-
-  if (loading) {
-    return (
-      <div className="search-results-page">
-        <div className="container">
-          <div className="loading-container">
-            <i className="fas fa-spinner fa-spin"></i>
-            <p>Searching for "{query}"...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Helper to get total results
+  const getTotalResults = () => searchResults.destinations.length;
 
   return (
     <div className="search-results-page">
@@ -111,7 +100,7 @@ const SearchResults = () => {
           <div className="no-query">
             <i className="fas fa-search"></i>
             <h3>Please enter a search term</h3>
-            <p>Use the search bar above to find tours and destinations</p>
+            <p>Use the search bar above to find destinations</p>
           </div>
         )}
 
@@ -119,33 +108,15 @@ const SearchResults = () => {
           <div className="no-results">
             <i className="fas fa-map-marked-alt"></i>
             <h3>No results found</h3>
-            <p>We couldn't find any tours or destinations matching "{query}"</p>
+            <p>We couldn't find any destinations matching "{query}"</p>
             <div className="suggestions-section">
               <h4>Try searching for:</h4>
               <ul>
                 <li>Popular destinations like "Paris", "Rome", "Bali"</li>
-                <li>Tour types like "City Tour", "Beach Escape"</li>
                 <li>Countries or cities</li>
               </ul>
             </div>
           </div>
-        )}
-
-        {/* Tours Section */}
-        {searchResults.tours.length > 0 && (
-          <section className="results-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-map-marked-alt"></i>
-                Tours ({searchResults.tours.length})
-              </h2>
-            </div>
-            <div className="tours-grid">
-              {searchResults.tours.map(tour => (
-                <TourCard key={tour._id} tour={tour} />
-              ))}
-            </div>
-          </section>
         )}
 
         {/* Destinations Section */}
@@ -159,7 +130,7 @@ const SearchResults = () => {
             </div>
             <div className="destinations-grid">
               {searchResults.destinations.map(destination => (
-                <div key={destination._id} className="destination-card">
+                <div key={destination._id || destination.name} className="destination-card">
                   <OptimizedImage 
                     src={getDestinationImageUrl(destination)} 
                     alt={destination.name} 
@@ -175,7 +146,7 @@ const SearchResults = () => {
                       {destination.location}
                     </p>
                     <p className="destination-description">{destination.description}</p>
-                    <Link to={`/destinations/${destination._id}`} className="explore-btn">
+                    <Link to={`/destinations/${destination._id || destination.name}`} className="explore-btn">
                       <i className="fas fa-arrow-right"></i>
                       Explore
                     </Link>
@@ -198,7 +169,6 @@ const SearchResults = () => {
                   className="suggestion-link"
                 >
                   <i className={`fas ${
-                    suggestion.type === 'tour' ? 'fa-map-marked-alt' :
                     suggestion.type === 'destination' ? 'fa-map-marker-alt' :
                     'fa-location-arrow'
                   }`}></i>

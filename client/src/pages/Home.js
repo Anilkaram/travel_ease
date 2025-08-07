@@ -1,7 +1,7 @@
 import React from 'react';
 // import Login from './pages/Login';
 import HeroSection from '../components/HeroSection';
-import FeaturedDestinations from '../components/FeaturedTours';
+import FeaturedDestinations from '../components/FeaturedDestinations';
 import PopularDestinations from '../components/PopularDestinations';
 import Testimonials from '../components/Testimonials';
 import Newsletter from '../components/Newsletter';

@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const tourRoutes = require('./routes/tourRoutes');
 const authRoutes = require('./routes/authRoutes');
 const destinationRoutes = require('./routes/destinationRoutes');
 const searchRoutes = require('./routes/searchRoutes');
@@ -40,7 +39,6 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-app.use('/api/tours', tourRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/destinations', destinationRoutes);
 app.use('/api/search', searchRoutes);
@@ -63,18 +61,26 @@ app.use('*', (req, res) => {
   });
 });
 
-// Database connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected successfully!'))
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+// Database connection - only connect if not already connected
+if (mongoose.connection.readyState === 0) {
+  console.log('🔌 Connecting to MongoDB from app.js...');
+  mongoose.connect(process.env.MONGO_URI, {
+    authSource: 'admin'
+  })
+    .then(() => console.log('✅ MongoDB connected successfully from app.js!'))
+    .catch(err => {
+      console.error('❌ MongoDB connection error:', err);
+      process.exit(1);
+    });
+} else {
+  console.log('✅ Using existing MongoDB connection in app.js');
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log('Environment:', process.env.NODE_ENV);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
+  console.log(`🔗 MongoDB connection state: ${mongoose.connection.readyState}`);
 });
 
 module.exports = app;

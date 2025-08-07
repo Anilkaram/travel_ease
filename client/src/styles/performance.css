@@ -10,7 +10,6 @@ html {
 }
 
 /* GPU acceleration for frequently animated elements */
-.tour-card,
 .destination-card,
 .suggestion-item,
 .nav-links,
@@ -40,7 +39,6 @@ img {
   contain: layout style paint;
 }
 
-.tour-card,
 .destination-card {
   contain: layout style paint;
 }
@@ -60,13 +58,11 @@ img {
 /* Optimize for mobile */
 @media (max-width: 768px) {
   /* Reduce expensive operations on mobile */
-  .tour-card:hover,
   .destination-card:hover {
     transform: none;
   }
   
   /* Simplify shadows on mobile */
-  .tour-card,
   .destination-card {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }

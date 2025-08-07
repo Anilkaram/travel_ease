@@ -143,7 +143,7 @@
   font-size: 1.5rem;
 }
 
-.tours-grid {
+.destinations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
@@ -152,8 +152,8 @@
 
 .destinations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Optimized for more cards */
+  gap: 24px;
   margin-bottom: 40px;
 }
 
@@ -290,7 +290,7 @@
     font-size: 1rem;
   }
   
-  .tours-grid, .destinations-grid {
+  .destinations-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -330,7 +330,7 @@
     font-size: 1.5rem;
   }
   
-  .tours-grid, .destinations-grid {
+  .destinations-grid {
     gap: 15px;
   }
 }

@@ -42,7 +42,8 @@ wait_for_mongodb
 
 echo "MongoDB is ready! Starting application..."
 
-# Run seed script first
+
+# Run main seed script first
 echo "Running database seed..."
 node seed.js
 

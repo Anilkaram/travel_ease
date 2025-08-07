@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const Tour = require('../models/Tour');
 const Destination = require('../models/Destination');
 
-// Unified search endpoint
+// Unified search endpoint - destinations only
 router.get('/', async (req, res) => {
   try {
     const { q } = req.query;
-    console.log('Unified search query received:', q);
+    console.log('Destination search query received:', q);
 
     if (!q) {
       return res.status(200).json({
         status: 'success',
         data: {
-          tours: [],
           destinations: [],
           suggestions: []
         }
@@ -22,15 +20,6 @@ router.get('/', async (req, res) => {
 
     const searchRegex = new RegExp(q.trim(), 'i');
 
-    // Search tours
-    const tours = await Tour.find({
-      $or: [
-        { title: searchRegex },
-        { description: searchRegex },
-        { location: searchRegex }
-      ]
-    }).limit(10);
-
     // Search destinations
     const destinations = await Destination.find({
       $or: [
@@ -38,30 +27,11 @@ router.get('/', async (req, res) => {
         { location: searchRegex },
         { description: searchRegex }
       ]
-    }).limit(10);
+    }).limit(20);
 
-    // Create suggestions combining both tours and destinations
+    // Create suggestions from destinations
     const suggestions = [];
     
-    // Add tour titles and locations as suggestions
-    tours.forEach(tour => {
-      if (!suggestions.some(s => s.value.toLowerCase() === tour.title.toLowerCase())) {
-        suggestions.push({
-          type: 'tour',
-          value: tour.title,
-          id: tour._id,
-          category: 'Tours'
-        });
-      }
-      if (!suggestions.some(s => s.value.toLowerCase() === tour.location.toLowerCase())) {
-        suggestions.push({
-          type: 'location',
-          value: tour.location,
-          category: 'Locations'
-        });
-      }
-    });
-
     // Add destination names and locations as suggestions
     destinations.forEach(destination => {
       if (!suggestions.some(s => s.value.toLowerCase() === destination.name.toLowerCase())) {
@@ -81,19 +51,18 @@ router.get('/', async (req, res) => {
       }
     });
 
-    console.log(`Found ${tours.length} tours, ${destinations.length} destinations, ${suggestions.length} suggestions for query "${q}"`);
+    console.log(`Found ${destinations.length} destinations, ${suggestions.length} suggestions for query "${q}"`);
 
     res.status(200).json({
       status: 'success',
       query: q,
       data: {
-        tours,
         destinations,
-        suggestions: suggestions.slice(0, 8) // Limit suggestions to 8
+        suggestions: suggestions.slice(0, 10) // Limit suggestions to 10
       }
     });
   } catch (err) {
-    console.error('Unified search error:', err);
+    console.error('Destination search error:', err);
     res.status(500).json({
       status: 'error',
       message: err.message
@@ -101,7 +70,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get search suggestions (for autocomplete)
+// Get search suggestions (for autocomplete) - destinations only
 router.get('/suggestions', async (req, res) => {
   try {
     const { q } = req.query;
@@ -115,40 +84,15 @@ router.get('/suggestions', async (req, res) => {
 
     const searchRegex = new RegExp(q.trim(), 'i');
     
-    // Get unique tour titles and locations
-    const tours = await Tour.find({
-      $or: [
-        { title: searchRegex },
-        { location: searchRegex }
-      ]
-    }).select('title location').limit(5);
-
-    // Get unique destination names and locations
+    // Get destination names and locations
     const destinations = await Destination.find({
       $or: [
         { name: searchRegex },
         { location: searchRegex }
       ]
-    }).select('name location').limit(5);
+    }).select('name location').limit(10);
 
     const suggestions = [];
-
-    tours.forEach(tour => {
-      if (tour.title.match(searchRegex) && !suggestions.some(s => s.value.toLowerCase() === tour.title.toLowerCase())) {
-        suggestions.push({
-          type: 'tour',
-          value: tour.title,
-          category: 'Tours'
-        });
-      }
-      if (tour.location.match(searchRegex) && !suggestions.some(s => s.value.toLowerCase() === tour.location.toLowerCase())) {
-        suggestions.push({
-          type: 'location',
-          value: tour.location,
-          category: 'Locations'
-        });
-      }
-    });
 
     destinations.forEach(destination => {
       if (destination.name.match(searchRegex) && !suggestions.some(s => s.value.toLowerCase() === destination.name.toLowerCase())) {
@@ -169,7 +113,7 @@ router.get('/suggestions', async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: suggestions.slice(0, 6)
+      data: suggestions.slice(0, 8) // Limit to 8 suggestions
     });
   } catch (err) {
     console.error('Search suggestions error:', err);
