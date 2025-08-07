@@ -34,10 +34,10 @@ spec:
               key: JWT_SECRET
         resources:
           requests:
-            cpu: 200m
-            memory: 254Mi
+            cpu: 100m
+            memory: 154Mi
           limits:
-            cpu: 700m
-            memory: 812Mi
+            cpu: 254m
+            memory: 354Mi
    #   imagePullSecrets:
     #  - name: ecr-cred
