@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-const Destination = require('./models/Destination');
-
-// Destination data array
+// Destination data for seeding
 const destinations = [
   {
     name: 'Kerala',
@@ -113,79 +110,4 @@ const destinations = [
   }
 ];
 
-// Main seeding function
-async function seedDestinations() {
-  try {
-    console.log('🌱 Starting destination seeding process...');
-    console.log('🔍 Current mongoose connection state:', mongoose.connection.readyState);
-    console.log('🔗 MONGO_URI available:', process.env.MONGO_URI ? 'YES' : 'NO');
-    
-    // Connection states: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
-    if (mongoose.connection.readyState !== 1) {
-      console.log('🔌 MongoDB not connected, establishing connection...');
-      await mongoose.connect(process.env.MONGO_URI, {
-        serverSelectionTimeoutMS: 30000,
-        socketTimeoutMS: 30000,
-        connectTimeoutMS: 30000,
-        maxPoolSize: 10,
-        authSource: 'admin',
-        retryWrites: true,
-        retryReads: true
-      });
-      console.log('✅ MongoDB connected for seeding!');
-    } else {
-      console.log('✅ Using existing MongoDB connection for seeding');
-    }
-    
-    // Test connection with a simple operation
-    console.log('🧪 Testing database connection...');
-    await mongoose.connection.db.admin().ping();
-    console.log('✅ Database ping successful!');
-    
-    // Check if destinations already exist
-    console.log('📊 Checking existing destinations...');
-    const existingCount = await Destination.countDocuments();
-    console.log(`📊 Found ${existingCount} existing destinations`);
-    
-    if (existingCount === 0) {
-      console.log('📝 No existing destinations found, inserting new data...');
-      
-      const result = await Destination.insertMany(destinations);
-      console.log(`✅ Successfully inserted ${result.length} destinations!`);
-      
-      // Verify the seeding worked
-      const newCount = await Destination.countDocuments();
-      console.log(`📊 Total destinations in database: ${newCount}`);
-      
-      // Show a few examples
-      const samples = await Destination.find().limit(3);
-      console.log('📋 Sample destinations:');
-      samples.forEach(dest => {
-        console.log(`  • ${dest.name}, ${dest.location}`);
-      });
-      
-    } else {
-      console.log('ℹ️ Destinations already exist, skipping seeding...');
-    }
-    
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Database seeding failed:', error.message);
-    
-    if (error.name === 'ValidationError') {
-      console.error('💬 Validation errors:', Object.keys(error.errors));
-      Object.keys(error.errors).forEach(field => {
-        console.error(`  - ${field}: ${error.errors[field].message}`);
-      });
-    }
-    
-    if (error.code === 11000) {
-      console.error('💬 Duplicate key error - some destinations might already exist');
-    }
-    
-    throw error;
-  }
-}
-
-module.exports = seedDestinations;
+module.exports = { destinations };
