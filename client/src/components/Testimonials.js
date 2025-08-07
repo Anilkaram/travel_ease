@@ -52,7 +52,7 @@ const Testimonials = () => {
                 <p className="testimonial-text">"{testimonial.text}"</p>
                 <div className="testimonial-rating">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="star">★</span>
+                    <span key={`${testimonial.id}-star-${i}`} className="star">★</span>
                   ))}
                 </div>
               </div>

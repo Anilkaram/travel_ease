@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
 const AuthContext = createContext();
 
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -89,9 +89,9 @@ export const AuthProvider = ({ children }) => {
       console.error('Login error:', error);
       return { success: false, message: 'Network error or server is not responding' };
     }
-  };
+  }, []);
 
-  const register = async (userData) => {
+  const register = useCallback(async (userData) => {
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -136,21 +136,21 @@ export const AuthProvider = ({ children }) => {
       console.error('Registration error:', error);
       return { success: false, message: 'Network error or server is not responding' };
     }
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('token');
     setUser(null);
-  };
+  }, []);
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     login,
     register,
     logout,
     loading,
     isAuthenticated: !!user
-  };
+  }), [user, loading]);
 
   return (
     <AuthContext.Provider value={value}>

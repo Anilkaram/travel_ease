@@ -95,13 +95,6 @@
   box-shadow: var(--shadow-xl);
 }
 
-.hero-content {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
 .search-box input, .search-box select {
   padding: 16px 20px;
   border-radius: var(--radius-lg);

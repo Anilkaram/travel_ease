@@ -44,8 +44,8 @@ const FeaturedDestinations = () => {
           <p>Discover breathtaking destinations that will create memories to last a lifetime</p>
         </div>
         <div className="destinations-grid">
-          {featured.map((destination, idx) => (
-            <div key={idx} className="destination-card">
+          {featured.map((destination) => (
+            <div key={destination.name} className="destination-card">
               <OptimizedImage src={destination.image} alt={destination.name} width="350" height="200" />
               <div className="destination-info">
                 <h3>{destination.name}</h3>

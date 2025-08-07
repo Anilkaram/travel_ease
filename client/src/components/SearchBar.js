@@ -88,6 +88,16 @@ const SearchBar = () => {
     }
   };
 
+  const getSuggestionIcon = (suggestionType) => {
+    if (suggestionType === 'tour') {
+      return 'fa-map-marked-alt';
+    } else if (suggestionType === 'destination') {
+      return 'fa-map-marker-alt';
+    } else {
+      return 'fa-location-arrow';
+    }
+  };
+
   return (
     <div className="search-bar-container" ref={searchRef}>
       <div className="search-input-wrapper">
@@ -117,18 +127,14 @@ const SearchBar = () => {
               <span>Searching...</span>
             </div>
           ) : suggestions.length > 0 ? (
-            suggestions.map((suggestion, index) => (
+            suggestions.map((suggestion) => (
               <div
-                key={index}
+                key={suggestion.value}
                 className="suggestion-item"
                 onClick={() => handleSuggestionClick(suggestion)}
               >
                 <div className="suggestion-content">
-                  <i className={`fas ${
-                    suggestion.type === 'tour' ? 'fa-map-marked-alt' :
-                    suggestion.type === 'destination' ? 'fa-map-marker-alt' :
-                    'fa-location-arrow'
-                  }`}></i>
+                  <i className={`fas ${getSuggestionIcon(suggestion.type)}`}></i>
                   <span className="suggestion-text">{suggestion.value}</span>
                   <span className="suggestion-category">{suggestion.category}</span>
                 </div>

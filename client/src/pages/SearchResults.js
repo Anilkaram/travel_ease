@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-// import TourCard from '../components/TourCard';
 import OptimizedImage from '../components/OptimizedImage';
 import { apiConfig } from '../config/api';
 import { images } from '../utils/images';
@@ -12,7 +11,6 @@ const SearchResults = () => {
     destinations: [],
     suggestions: []
   });
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   const query = searchParams.get('q') || '';
@@ -40,11 +38,9 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (!query.trim()) {
-        setLoading(false);
         return;
       }
 
-      setLoading(true);
       setError(null);
 
       try {
@@ -63,8 +59,6 @@ const SearchResults = () => {
       } catch (err) {
         console.error('Search error:', err);
         setError('Error occurred while searching. Please try again.');
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -74,6 +68,17 @@ const SearchResults = () => {
   // Helper to get total results
   const getTotalResults = () => searchResults.destinations.length;
 
+  // Helper to get search results message
+  const getSearchMessage = () => {
+    const totalResults = getTotalResults();
+    if (totalResults > 0) {
+      const pluralSuffix = totalResults !== 1 ? 's' : '';
+      return `Found ${totalResults} result${pluralSuffix} for "${query}"`;
+    } else {
+      return `No results found for "${query}"`;
+    }
+  };
+
   return (
     <div className="search-results-page">
       <div className="container">
@@ -81,10 +86,7 @@ const SearchResults = () => {
           <h1>Search Results</h1>
           {query && (
             <p className="search-query">
-              {getTotalResults() > 0 
-                ? `Found ${getTotalResults()} result${getTotalResults() !== 1 ? 's' : ''} for "${query}"`
-                : `No results found for "${query}"`
-              }
+              {getSearchMessage()}
             </p>
           )}
         </div>

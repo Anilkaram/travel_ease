@@ -1,5 +1,4 @@
 import React from 'react';
-// import Login from './pages/Login';
 import HeroSection from '../components/HeroSection';
 import FeaturedDestinations from '../components/FeaturedDestinations';
 import PopularDestinations from '../components/PopularDestinations';

@@ -27,7 +27,7 @@ const HeroSection = () => {
       {/* Background images */}
       {backgroundImages.map((image, index) => (
         <div
-          key={index}
+          key={image}
           className={`hero-background ${index === currentImageIndex ? 'active' : ''}`}
           style={{
             backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${image})`
@@ -54,9 +54,9 @@ const HeroSection = () => {
 
       {/* Slide indicators */}
       <div className="slide-indicators">
-        {backgroundImages.map((_, index) => (
+        {backgroundImages.map((image, index) => (
           <button
-            key={index}
+            key={image}
             className={`indicator ${index === currentImageIndex ? 'active' : ''}`}
             onClick={() => setCurrentImageIndex(index)}
           />

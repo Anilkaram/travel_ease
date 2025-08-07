@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // Hook for prefetching routes on hover/focus
 export const usePrefetch = () => {
-  const navigate = useNavigate();
-
   const prefetchRoute = (path) => {
     // Create a link element to trigger prefetch
     const link = document.createElement('link');

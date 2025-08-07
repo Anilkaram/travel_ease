@@ -28,8 +28,8 @@ const Destinations = () => {
     <div className="destinations-page">
       <h1>Explore Our Destinations</h1>
       <div className="destinations-grid">
-        {destinations.map((destination, idx) => (
-          <div key={idx} className="destination-card">
+        {destinations.map((destination) => (
+          <div key={destination.name} className="destination-card">
             <img src={destination.image} alt={destination.name} />
             <div className="destination-info">
               <h3>{destination.name}, {destination.location}</h3>

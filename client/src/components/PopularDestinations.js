@@ -47,8 +47,8 @@ const PopularDestinations = () => {
           <p>Discover the world's most sought-after travel destinations, handpicked by our travel experts</p>
         </div>
         <div className="destinations-grid">
-          {popular.map((destination, idx) => (
-            <div key={idx} className="destination-card">
+          {popular.map((destination) => (
+            <div key={destination.name} className="destination-card">
               <OptimizedImage src={destination.image} alt={destination.name} width="350" height="200" />
               <div className="destination-info">
                 <h3>{destination.name}</h3>
