@@ -37,6 +37,9 @@ ODM: Mongoose v7.4.3
 Authentication: Username/Password (admin/admin)
 Database Name: travelease
 
+# Featuring Security Practices in CI pipeline 
+Using SonarQube, Trivy, OWASP Dependency Check
+for resource https://github.com/Anilkaram/Security_best_practices.git
 # Application image with chat agent
 <img width="1920" height="1080" alt="Screenshot (310)" src="https://github.com/user-attachments/assets/2c958b17-99fa-47e4-9971-5f99d99c8ffb" />
 
