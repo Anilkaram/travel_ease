@@ -46,9 +46,19 @@ async function runSeed() {
   try {
     console.log('🌱 Running database seed...');
     
-    // Import and run seeding function directly
-    const seedFunction = require('./seedData');
-    await seedFunction();
+    // Import the destinations data and seed manually
+    const { destinations } = require('./seedData');
+    const Destination = require('./models/Destination');
+    
+    // Clear existing destinations
+    console.log('🗑️ Clearing existing destinations...');
+    const deletedCount = await Destination.deleteMany({});
+    console.log(`✅ Removed ${deletedCount.deletedCount} existing destinations`);
+
+    // Insert new destinations
+    console.log('📝 Inserting new destinations...');
+    const result = await Destination.insertMany(destinations);
+    console.log(`✅ Successfully inserted ${result.length} destinations!`);
     
     console.log('✅ Database seeding completed successfully!');
     
