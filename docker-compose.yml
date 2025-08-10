@@ -3,10 +3,7 @@ version: '3.8'
 services:
   client:
     #image: anildoc143/travel_ease_website_v4:client
-    build: 
-      context: ./client
-      args:
-        - NODE_ENV=development
+    build: ./client
     ports:
       - "80:80"
     environment:
