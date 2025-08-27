@@ -26,7 +26,7 @@ spec:
           echo "Server is ready!"
       containers:
       - name: client
-        image: "{{ .Values.client.image }}:{{ .Values.client.tag }}"
+        image: "{{ .Values.client.cimage }}:{{ .Values.client.ctag }}"
         ports:
         - containerPort: 80
         env:
