@@ -1,6 +1,6 @@
 client:
-  image: anildoc143/travel_ease_website_v4
-  tag: client
+  cimage: anildoc143/travel_ease_website_v4
+  ctag: client
   replicas: 1
   service:
     type: ClusterIP
@@ -15,8 +15,8 @@ clientCanary:
     port: 80
 
 server:
-  image: anildoc143/travel_ease_website_v4
-  tag: server
+  simage: anildoc143/travel_ease_website_v4
+  stag: server
   replicas: 1
   service:
     type: ClusterIP
