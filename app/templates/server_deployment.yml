@@ -26,7 +26,7 @@ spec:
           echo "MongoDB is ready!"
       containers:
       - name: server
-        image: "{{ .Values.server.image }}:{{ .Values.server.tag }}"
+        image: "{{ .Values.server.simage }}:{{ .Values.server.stag }}"
         ports:
         - containerPort: 5000
         env:
